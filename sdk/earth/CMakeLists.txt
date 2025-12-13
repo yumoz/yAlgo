@@ -3,8 +3,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# 定义工具SDK库名称和版本
-set(UTILS_SDK_NAME "yalgo_utils")
+# 定义地球坐标SDK库名称和版本
+set(UTILS_SDK_NAME "yalgo_earth")
 set(YUTILS_UTILS_VERSION_MAJOR 1)
 set(YUTILS_UTILS_VERSION_MINOR 0)
 set(YUTILS_UTILS_VERSION_PATCH 0)
@@ -19,7 +19,8 @@ include_directories(${CMAKE_SOURCE_DIR}/sdk)
 
 # 收集源文件
 set(SOURCES
-    exec_path_utils.cpp
+    earth_point.cpp
+    earth_converter.cpp
 )
 
 # 创建动态库
@@ -42,15 +43,17 @@ set_target_properties(${UTILS_SDK_NAME} PROPERTIES
 include(YuLibInstall)
 
 # 设置头文件列表
-set(UTILS_HEADER_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/exec_path_utils.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils_exports.h
+set(EARTH_HEADER_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/earth_point.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/earth_converter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/earth_exports.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/version.h
 )
 
 # 调用安装函数
 yutils_install_lib(
     TARGET_NAME ${UTILS_SDK_NAME}
-    HEADER_FILES ${UTILS_HEADER_FILES}
+    HEADER_FILES ${EARTH_HEADER_FILES}
 )
 
 # Windows平台特定的版本信息设置
@@ -62,7 +65,7 @@ if(WIN32)
         # 文件描述
         OUTPUT_NAME "${UTILS_SDK_NAME}"
         # 设置DLL资源编译器的定义
-        DEFINE_SYMBOL "YALGO_UTILS_EXPORTS"
+        DEFINE_SYMBOL "YALGO_EARTH_EXPORTS"
     )
     
     # 创建Windows版本资源文件的内容
@@ -77,7 +80,7 @@ if(WIN32)
 endif()
 
 # 添加编译定义
-target_compile_definitions(${UTILS_SDK_NAME} PRIVATE YALGO_UTILS_EXPORTS)
+target_compile_definitions(${UTILS_SDK_NAME} PRIVATE YALGO_EARTH_EXPORTS)
 
 # 安装规则
 install(TARGETS ${UTILS_SDK_NAME}
@@ -87,7 +90,7 @@ install(TARGETS ${UTILS_SDK_NAME}
 )
 
 # 安装头文件
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/sdk/utils/
-    DESTINATION include/yAlgo/utils
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/sdk/earth/
+    DESTINATION include/yAlgo/earth
     FILES_MATCHING PATTERN "*.h"
 )

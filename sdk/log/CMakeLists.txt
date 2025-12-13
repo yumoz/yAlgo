@@ -25,13 +25,8 @@ set(SOURCES
 # 创建动态库
 add_library(${LOG_SDK_NAME} SHARED ${SOURCES})
 
-# 设置目标属性（输出目录和版本信息）
+# 设置目标属性（版本信息）
 set_target_properties(${LOG_SDK_NAME} PROPERTIES
-    # 输出目录设置
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-    
     # 版本信息
     VERSION "${YUTILS_LOG_VERSION}"
     SOVERSION "${YUTILS_LOG_VERSION_MAJOR}"

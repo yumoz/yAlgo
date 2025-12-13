@@ -19,14 +19,34 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # yUtils 项目不依赖Qt，使用纯C++实现
 
-# 确保输出目录存在
-file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+# 根据操作系统和构建类型设置输出目录
+set(OS_NAME "unknown")
+if(WIN32)
+    set(OS_NAME "windows")
+elseif(APPLE)
+    set(OS_NAME "macos")
+elseif(UNIX)
+    set(OS_NAME "linux")
+endif()
 
-# 设置输出目录 - 统一放在项目根目录下的bin和lib文件夹
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+# 获取构建类型，如果没有设置默认使用Release
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "构建类型" FORCE)
+endif()
+string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE_LOWER)
+
+# 设置输出目录 - 按照操作系统和构建类型区分
+set(OUTPUT_BIN_DIR "${CMAKE_SOURCE_DIR}/bin/${OS_NAME}/${BUILD_TYPE_LOWER}")
+set(OUTPUT_LIB_DIR "${CMAKE_SOURCE_DIR}/lib/${OS_NAME}/${BUILD_TYPE_LOWER}")
+
+# 确保输出目录存在
+file(MAKE_DIRECTORY ${OUTPUT_BIN_DIR})
+file(MAKE_DIRECTORY ${OUTPUT_LIB_DIR})
+
+# 设置输出目录
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_LIB_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_LIB_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_BIN_DIR}")
 
 # 包含头文件搜索路径
 include_directories(${CMAKE_SOURCE_DIR}/sdk)
@@ -43,15 +63,18 @@ endif()
 # 添加子目录
 add_subdirectory(sdk/log)
 add_subdirectory(sdk/utils)
+add_subdirectory(sdk/math)
+add_subdirectory(sdk/earth)
 add_subdirectory(examples/log)
 add_subdirectory(examples/utils)
+add_subdirectory(examples/math)
+add_subdirectory(examples/earth)
 
-# 创建复制文件到根目录的自定义目标
+# 创建复制文件的自定义目标已不再需要，因为文件已直接生成在最终位置
+# 保留此目标但不执行任何操作，以保持向后兼容性
 add_custom_target(copy_binaries ALL
-    DEPENDS yalgo_log yalgo_utils log_example utils_example
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/bin" "${CMAKE_SOURCE_DIR}/bin"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/lib" "${CMAKE_SOURCE_DIR}/lib"
-    COMMENT "复制生成的文件到项目根目录的bin和lib文件夹"
+    DEPENDS yalgo_log yalgo_utils yalgo_math yalgo_earth log_example utils_example math_example earth_example
+    COMMENT "文件已直接生成在最终输出目录，无需复制"
 )
 
 # 项目清理目标

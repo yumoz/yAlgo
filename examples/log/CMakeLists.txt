@@ -27,11 +27,6 @@ target_link_libraries(${EXAMPLE_NAME} PRIVATE
     yalgo_log
 )
 
-# 设置输出目录
-set_target_properties(${EXAMPLE_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-)
-
 # 配置版本信息文件
 if(EXISTS "${CMAKE_SOURCE_DIR}/resources/log_example_version.in")
     configure_file(
