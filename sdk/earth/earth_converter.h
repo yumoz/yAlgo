@@ -155,6 +155,17 @@ public:
      * @return double 第二偏心率平方
      */
     double getSecondEccentricitySquared() const;
+    
+    /**
+     * @brief 判断地球上两点是否通视
+     * 
+     * 考虑地球曲率影响，判断两点之间是否存在视线路径
+     * 
+     * @param point1 第一个点
+     * @param point2 第二个点
+     * @return bool 如果两点通视返回true，否则返回false
+     */
+    bool isVisible(const EarthPoint& point1, const EarthPoint& point2) const;
 
 private:
     /**

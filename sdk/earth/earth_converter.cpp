@@ -274,5 +274,67 @@ double EarthConverter::getSecondEccentricitySquared() const {
     return m_params.secondEccentricitySquared;
 }
 
+// 判断地球上两点是否通视
+bool EarthConverter::isVisible(const EarthPoint& point1, const EarthPoint& point2) const {
+    // 将WGS84坐标转换为ECEF坐标
+    ECEFCoordinate ecef1 = wgs84ToECEF(point1);
+    ECEFCoordinate ecef2 = wgs84ToECEF(point2);
+    
+    // 计算向量AB（从点A到点B）
+    double ABx = ecef2.x - ecef1.x;
+    double ABy = ecef2.y - ecef1.y;
+    double ABz = ecef2.z - ecef1.z;
+    
+    // 计算向量OA（从原点到点A）
+    double OAx = ecef1.x;
+    double OAy = ecef1.y;
+    double OAz = ecef1.z;
+    
+    // 计算点积 OA · AB
+    double dotProduct = OAx * ABx + OAy * ABy + OAz * ABz;
+    
+    // 如果点积为正，说明最小距离在点A的另一侧，两点通视
+    if (dotProduct >= 0.0) {
+        return true;
+    }
+    
+    // 计算AB向量的长度平方
+    double ABLengthSquared = ABx * ABx + ABy * ABy + ABz * ABz;
+    
+    // 如果AB向量长度为0，说明两点重合，通视
+    if (ABLengthSquared == 0.0) {
+        return true;
+    }
+    
+    // 计算参数t，用于确定投影点在AB线段上的位置
+    double t = -dotProduct / ABLengthSquared;
+    
+    // 计算投影点P的坐标
+    double Px, Py, Pz;
+    if (t <= 0.0) {
+        // 投影点在点A或其后方
+        Px = ecef1.x;
+        Py = ecef1.y;
+        Pz = ecef1.z;
+    } else if (t >= 1.0) {
+        // 投影点在点B或其前方
+        Px = ecef2.x;
+        Py = ecef2.y;
+        Pz = ecef2.z;
+    } else {
+        // 投影点在线段AB上
+        Px = ecef1.x + t * ABx;
+        Py = ecef1.y + t * ABy;
+        Pz = ecef1.z + t * ABz;
+    }
+    
+    // 计算投影点P到原点的距离
+    double PLength = std::sqrt(Px * Px + Py * Py + Pz * Pz);
+    
+    // 如果投影点到原点的距离大于地球半径，则两点通视
+    // 使用椭球体的长半轴作为地球半径近似值
+    return PLength > m_params.semiMajorAxis;
+}
+
 } // namespace earth
 } // namespace yalgo

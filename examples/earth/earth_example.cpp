@@ -1,4 +1,5 @@
 #include "earth_test.h"
+#include <windows.h>
 
 /**
  * @file earth_example.cpp

@@ -277,6 +277,113 @@ void EarthTest::demoEllipsoidModels() {
     std::cout << "CLARKE1866: " << ecefClarke.toString() << std::endl;
 }
 
+// 演示直线距离计算
+void EarthTest::demoEarthPointStraightLineDistance() {
+    std::cout << "\n=== 直线距离计算 ===\n";
+    
+    // 北京（天安门）
+    EarthPoint beijing(116.3974, 39.9093, 50.0);
+    // 上海（东方明珠）
+    EarthPoint shanghai(121.4999, 31.2397, 60.0);
+    
+    std::cout << "北京: " << beijing.toString() << std::endl;
+    std::cout << "上海: " << shanghai.toString() << std::endl;
+    
+    // 计算直线距离
+    double straightLineDist1 = beijing.straightLineDistanceTo(shanghai);
+    double straightLineDist2 = straightLineDistance(beijing, shanghai);
+    double sphericalDist = beijing.distanceTo(shanghai);
+    
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "两点之间直线距离（成员函数）: " << straightLineDist1 << "米 = " << straightLineDist1 / 1000.0 << "公里" << std::endl;
+    std::cout << "两点之间直线距离（全局函数）: " << straightLineDist2 << "米 = " << straightLineDist2 / 1000.0 << "公里" << std::endl;
+    std::cout << "两点之间球面距离（Haversine）: " << sphericalDist << "米 = " << sphericalDist / 1000.0 << "公里" << std::endl;
+    std::cout << "直线距离与球面距离之差: " << std::abs(straightLineDist1 - sphericalDist) << "米" << std::endl;
+}
+
+// 演示Vincenty球面距离计算
+void EarthTest::demoEarthPointVincentyDistance() {
+    std::cout << "\n=== Vincenty球面距离计算 ===\n";
+    
+    // 北京（天安门）
+    EarthPoint beijing(116.3974, 39.9093, 50.0);
+    // 上海（东方明珠）
+    EarthPoint shanghai(121.4999, 31.2397, 60.0);
+    
+    std::cout << "北京: " << beijing.toString() << std::endl;
+    std::cout << "上海: " << shanghai.toString() << std::endl;
+    
+    // 计算不同方法的球面距离
+    double haversineDist = beijing.distanceTo(shanghai);
+    double vincentyDist1 = beijing.vincentyDistanceTo(shanghai);
+    double vincentyDist2 = vincentyDistance(beijing, shanghai);
+    
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "两点之间球面距离（Haversine）: " << haversineDist << "米 = " << haversineDist / 1000.0 << "公里" << std::endl;
+    std::cout << "两点之间球面距离（Vincenty，成员函数）: " << vincentyDist1 << "米 = " << vincentyDist1 / 1000.0 << "公里" << std::endl;
+    std::cout << "两点之间球面距离（Vincenty，全局函数）: " << vincentyDist2 << "米 = " << vincentyDist2 / 1000.0 << "公里" << std::endl;
+    std::cout << "Vincenty与Haversine距离之差: " << std::abs(vincentyDist1 - haversineDist) << "米" << std::endl;
+}
+
+// 演示坐标范围检查
+void EarthTest::demoEarthPointCoordinateRange() {
+    std::cout << "\n=== 坐标范围检查 ===\n";
+    
+    // 测试正常坐标
+    EarthPoint normalPoint(116.3974, 39.9093, 50.0);
+    std::cout << "正常坐标: " << normalPoint.toString() << std::endl;
+    
+    // 测试超出范围的坐标
+    EarthPoint outOfRangePoint(200.0, 100.0, 100.0);
+    std::cout << "超出范围坐标输入 (200.0, 100.0, 100.0) 后: " << outOfRangePoint.toString() << std::endl;
+    
+    // 测试负超出范围的坐标
+    EarthPoint negativeOutOfRangePoint(-200.0, -100.0, 100.0);
+    std::cout << "负超出范围坐标输入 (-200.0, -100.0, 100.0) 后: " << negativeOutOfRangePoint.toString() << std::endl;
+    
+    // 测试边界坐标
+    EarthPoint boundaryPoint(180.0, 90.0, 0.0);
+    std::cout << "边界坐标 (180.0, 90.0, 0.0): " << boundaryPoint.toString() << std::endl;
+    
+    // 测试边界外坐标
+    EarthPoint beyondBoundaryPoint(181.0, 91.0, 0.0);
+    std::cout << "边界外坐标输入 (181.0, 91.0, 0.0) 后: " << beyondBoundaryPoint.toString() << std::endl;
+}
+
+// 演示通视判断功能
+void EarthTest::demoLineOfSight() {
+    std::cout << "\n=== 通视判断 ===\n";
+    
+    EarthConverter converter;
+    
+    // 测试1: 两个近距离点（应该通视）
+    EarthPoint pointA(116.3974, 39.9093, 50.0); // 北京天安门
+    EarthPoint pointB(116.4074, 39.9093, 50.0); // 北京附近点，相距约1公里
+    bool visible1 = converter.isVisible(pointA, pointB);
+    
+    std::cout << "点A: " << pointA.toString() << std::endl;
+    std::cout << "点B: " << pointB.toString() << std::endl;
+    std::cout << "两点是否通视: " << (visible1 ? "是" : "否") << std::endl;
+    
+    // 测试2: 两个远距离点（可能不通视）
+    EarthPoint pointC(0.0, 0.0, 0.0); // 赤道上的点
+    EarthPoint pointD(90.0, 0.0, 0.0); // 赤道上相距约1万公里的点
+    bool visible2 = converter.isVisible(pointC, pointD);
+    
+    std::cout << "\n点C: " << pointC.toString() << std::endl;
+    std::cout << "点D: " << pointD.toString() << std::endl;
+    std::cout << "两点是否通视: " << (visible2 ? "是" : "否") << std::endl;
+    
+    // 测试3: 两个高点远距离点（可能通视）
+    EarthPoint pointE(0.0, 0.0, 100000.0); // 赤道上100公里高空
+    EarthPoint pointF(90.0, 0.0, 100000.0); // 赤道上100公里高空，相距约1万公里
+    bool visible3 = converter.isVisible(pointE, pointF);
+    
+    std::cout << "\n点E: " << pointE.toString() << std::endl;
+    std::cout << "点F: " << pointF.toString() << std::endl;
+    std::cout << "两点是否通视: " << (visible3 ? "是" : "否") << std::endl;
+}
+
 // 运行所有测试
 void EarthTest::runAllTests() {
     std::cout << "========================================\n";
@@ -287,11 +394,15 @@ void EarthTest::runAllTests() {
     demoEarthPointConstruction();
     demoEarthPointOperators();
     demoEarthPointDistance();
+    demoEarthPointStraightLineDistance();
+    demoEarthPointVincentyDistance();
+    demoEarthPointCoordinateRange();
     demoEarthPointBearing();
     demoVectorOperations();
     demoWgs84ToEcefConversion();
     demoWgs84ToUtmConversion();
     demoEllipsoidModels();
+    demoLineOfSight();
     
     std::cout << "\n========================================\n";
     std::cout << "所有地球坐标库测试完成\n";

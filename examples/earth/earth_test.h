@@ -54,6 +54,26 @@ public:
     static void demoEllipsoidModels();
     
     /**
+     * 演示直线距离计算
+     */
+    static void demoEarthPointStraightLineDistance();
+    
+    /**
+     * 演示Vincenty球面距离计算
+     */
+    static void demoEarthPointVincentyDistance();
+    
+    /**
+     * 演示坐标范围检查
+     */
+    static void demoEarthPointCoordinateRange();
+    
+    /**
+     * 演示通视判断功能
+     */
+    static void demoLineOfSight();
+    
+    /**
      * 运行所有测试
      */
     static void runAllTests();

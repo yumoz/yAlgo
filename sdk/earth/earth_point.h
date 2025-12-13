@@ -193,12 +193,28 @@ public:
     void set(double longitude, double latitude, double altitude = 0.0);
 
     /**
-     * @brief 计算两点之间的距离
+     * @brief 计算两点之间的球面距离（使用Haversine公式）
      * 
      * @param other 另一个点
-     * @return double 两点之间的距离（米）
+     * @return double 两点之间的球面距离（米）
      */
     double distanceTo(const EarthPoint& other) const;
+    
+    /**
+     * @brief 计算两点之间的直线距离（欧几里得距离）
+     * 
+     * @param other 另一个点
+     * @return double 两点之间的直线距离（米）
+     */
+    double straightLineDistanceTo(const EarthPoint& other) const;
+    
+    /**
+     * @brief 计算两点之间的精确球面距离（使用Vincenty公式）
+     * 
+     * @param other 另一个点
+     * @return double 两点之间的精确球面距离（米）
+     */
+    double vincentyDistanceTo(const EarthPoint& other) const;
 
     /**
      * @brief 计算两点之间的方位角
@@ -271,13 +287,31 @@ EARTH_API double length2(const EarthPoint& point);
 EARTH_API EarthPoint normalize(const EarthPoint& point);
 
 /**
- * @brief 计算两点之间的距离
+ * @brief 计算两点之间的球面距离（使用Haversine公式）
  * 
  * @param lhs 第一个点
  * @param rhs 第二个点
- * @return double 距离（米）
+ * @return double 球面距离（米）
  */
 EARTH_API double distance(const EarthPoint& lhs, const EarthPoint& rhs);
+
+/**
+ * @brief 计算两点之间的直线距离（欧几里得距离）
+ * 
+ * @param lhs 第一个点
+ * @param rhs 第二个点
+ * @return double 直线距离（米）
+ */
+EARTH_API double straightLineDistance(const EarthPoint& lhs, const EarthPoint& rhs);
+
+/**
+ * @brief 计算两点之间的精确球面距离（使用Vincenty公式）
+ * 
+ * @param lhs 第一个点
+ * @param rhs 第二个点
+ * @return double 精确球面距离（米）
+ */
+EARTH_API double vincentyDistance(const EarthPoint& lhs, const EarthPoint& rhs);
 
 /**
  * @brief 计算两点之间的方位角
