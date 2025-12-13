@@ -39,14 +39,17 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/resources/log_example_version.in")
     )
 endif()
 
-# 安装规则
-install(TARGETS ${EXAMPLE_NAME}
-    RUNTIME DESTINATION bin
-)
+# 使用通用安装模块
+include(YuLibInstall)
 
-# 安装配置文件
+# 定义配置文件列表
+set(EXAMPLE_CONFIG_FILES "")
 if(EXISTS "${CMAKE_BINARY_DIR}/etc/log_example_version.conf")
-    install(FILES "${CMAKE_BINARY_DIR}/etc/log_example_version.conf"
-        DESTINATION etc
-    )
+    set(EXAMPLE_CONFIG_FILES "${CMAKE_BINARY_DIR}/etc/log_example_version.conf")
 endif()
+
+# 调用应用程序安装函数
+yutils_install_app(
+    TARGET_NAME ${EXAMPLE_NAME}
+    CONFIG_FILES ${EXAMPLE_CONFIG_FILES}
+)

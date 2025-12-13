@@ -43,18 +43,19 @@ set_target_properties(${UTILS_SDK_NAME} PROPERTIES
     PROJECT_VERSION_PATCH "${YUTILS_UTILS_VERSION_PATCH}"
 )
 
-# 安装规则 - 动态库
-install(TARGETS ${UTILS_SDK_NAME}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-)
+# 使用通用安装模块
+include(YuLibInstall)
 
-# 安装头文件
-install(FILES
+# 设置头文件列表
+set(UTILS_HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/exec_path_utils.h
     ${CMAKE_CURRENT_SOURCE_DIR}/utils_exports.h
-    DESTINATION include/yUtils/utils
+)
+
+# 调用安装函数
+yutils_install_lib(
+    TARGET_NAME ${UTILS_SDK_NAME}
+    HEADER_FILES ${UTILS_HEADER_FILES}
 )
 
 # Windows平台特定的版本信息设置

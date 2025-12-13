@@ -36,6 +36,8 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
     # 暂时注释掉，因为相关模块可能不存在
     # include(YuMakeApp)
+    # 包含安装模块但不执行任何操作，确保路径设置正确
+    include(YuLibInstall OPTIONAL)
 endif()
 
 # 添加子目录
@@ -60,9 +62,5 @@ add_custom_target(clean-all
     COMMENT "清理所有生成的文件和目录"
 )
 
-# 安装规则 - 头文件安装
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/sdk/
-    DESTINATION include/yUtils
-    FILES_MATCHING PATTERN "*.h"
-    PATTERN "*.hpp"
-)
+# 注意：各个模块的安装规则已由YuLibInstall.cmake模块处理
+# 此处不再需要全局的头文件安装规则，避免重复安装
