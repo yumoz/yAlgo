@@ -1,4 +1,4 @@
-﻿#include "exec_path_utils.h"
+#include "exec_path_utils.h"
 #include <cstdlib>
 #include <cstring>
 #include <vector>
@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 #endif
 
-namespace yutils {
+namespace yalgo {
 namespace utils {
 
 // 获取可执行文件完整路径（核心实现）
@@ -162,4 +162,4 @@ std::string ExecPathUtils::normalizePath(const std::string& path) {
 }
 
 } // namespace utils
-} // namespace yutils
+} // namespace yalgo

@@ -1,13 +1,13 @@
 /**
  * @file AsyncLogger.h
  * @brief 高性能异步日志模块头文件
- * @author yUtils Team
+ * @author yAlgo Team
  * @date 2025-12-07
  * @version 1.0.0
  */
 
-#ifndef YUTILS_SDK_LOG_ASYNC_LOGGER_H
-#define YUTILS_SDK_LOG_ASYNC_LOGGER_H
+#ifndef YALGO_SDK_LOG_ASYNC_LOGGER_H
+#define YALGO_SDK_LOG_ASYNC_LOGGER_H
 
 #include "log_exports.h"
 
@@ -23,7 +23,7 @@
 #include <sstream>
 
 // 定义命名空间
-namespace yutils {
+namespace yalgo {
 namespace log {
 
 /**
@@ -41,7 +41,7 @@ enum class LogLevel {
  * @brief 日志配置结构体
  */
 struct LogConfig {
-    std::string log_file = "yutils_log.txt";  ///< 日志文件路径
+    std::string log_file = "yalgo_log.txt";  ///< 日志文件路径
     LogLevel runtime_level = LogLevel::INFO;  ///< 运行时日志级别
     bool enable_console = true;               ///< 是否启用控制台输出
     bool enable_file = true;                  ///< 是否启用文件输出
@@ -52,7 +52,7 @@ struct LogConfig {
     std::vector<std::string> enable_modules;  ///< 启用的模块列表
     std::vector<std::string> filter_keywords; ///< 关键词过滤
     bool enable_syslog = false;               ///< 是否启用系统日志
-    std::string syslog_ident = "yutils";     ///< 系统日志标识
+    std::string syslog_ident = "yalgo";     ///< 系统日志标识
 };
 
 /**
@@ -246,150 +246,150 @@ private:
 };
 
 } // namespace log
-} // namespace yutils
+} // namespace yalgo
 
 // 编译期日志级别控制宏（默认开启DEBUG级别）
-#ifndef YUTILS_LOG_LEVEL
-#define YUTILS_LOG_LEVEL 4 // DEBUG级别
+#ifndef YALGO_LOG_LEVEL
+#define YALGO_LOG_LEVEL 4 // DEBUG级别
 #endif
 
 // 日志宏定义（使用命名空间）
-#if YUTILS_LOG_LEVEL >= 1 // LOG_ERROR级别
+#if YALGO_LOG_LEVEL >= 1 // LOG_ERROR级别
 #define YLOG_ERROR(format, ...) do { \
     std::ostringstream oss; \
     oss << "[" << __FILE__ << ":" << __LINE__ << ":" << __func__ << "] " \
-        << yutils::log::formatLog(format, ##__VA_ARGS__); \
-    yutils::log::AsyncLogger::getInstance().log(yutils::log::LogLevel::LOG_ERROR, "ERROR", oss.str()); \
+        << yalgo::log::formatLog(format, ##__VA_ARGS__); \
+    yalgo::log::AsyncLogger::getInstance().log(yalgo::log::LogLevel::LOG_ERROR, "ERROR", oss.str()); \
 } while(0)
 #else
 #define YLOG_ERROR(format, ...) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 2 // WARN级别
+#if YALGO_LOG_LEVEL >= 2 // WARN级别
 #define YLOG_WARN(format, ...) do { \
     std::ostringstream oss; \
     oss << "[" << __FILE__ << ":" << __LINE__ << ":" << __func__ << "] " \
-        << yutils::log::formatLog(format, ##__VA_ARGS__); \
-    yutils::log::AsyncLogger::getInstance().log(yutils::log::LogLevel::WARN, "WARN", oss.str()); \
+        << yalgo::log::formatLog(format, ##__VA_ARGS__); \
+    yalgo::log::AsyncLogger::getInstance().log(yalgo::log::LogLevel::WARN, "WARN", oss.str()); \
 } while(0)
 #else
 #define YLOG_WARN(format, ...) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 3 // INFO级别
+#if YALGO_LOG_LEVEL >= 3 // INFO级别
 #define YLOG_INFO(format, ...) do { \
     std::ostringstream oss; \
     oss << "[" << __FILE__ << ":" << __LINE__ << ":" << __func__ << "] " \
-        << yutils::log::formatLog(format, ##__VA_ARGS__); \
-    yutils::log::AsyncLogger::getInstance().log(yutils::log::LogLevel::INFO, "INFO", oss.str()); \
+        << yalgo::log::formatLog(format, ##__VA_ARGS__); \
+    yalgo::log::AsyncLogger::getInstance().log(yalgo::log::LogLevel::INFO, "INFO", oss.str()); \
 } while(0)
 #else
 #define YLOG_INFO(format, ...) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 4 // DEBUG级别
+#if YALGO_LOG_LEVEL >= 4 // DEBUG级别
 #define YLOG_DEBUG(format, ...) do { \
     std::ostringstream oss; \
     oss << "[" << __FILE__ << ":" << __LINE__ << ":" << __func__ << "] " \
-        << yutils::log::formatLog(format, ##__VA_ARGS__); \
-    yutils::log::AsyncLogger::getInstance().log(yutils::log::LogLevel::DEBUG, "DEBUG", oss.str()); \
+        << yalgo::log::formatLog(format, ##__VA_ARGS__); \
+    yalgo::log::AsyncLogger::getInstance().log(yalgo::log::LogLevel::DEBUG, "DEBUG", oss.str()); \
 } while(0)
 #else
 #define YLOG_DEBUG(format, ...) do {} while(0)
 #endif
 
 // 模块日志宏
-#if YUTILS_LOG_LEVEL >= 1 // ERROR级别
+#if YALGO_LOG_LEVEL >= 1 // ERROR级别
 #define YLOG_MODULE_ERROR(module, format, ...) do { \
     std::ostringstream oss; \
     oss << "[" << module << "] [" << __FILE__ << ":" << __LINE__ << ":" << __func__ << "] " \
-        << yutils::log::formatLog(format, ##__VA_ARGS__); \
-    yutils::log::AsyncLogger::getInstance().log(yutils::log::LogLevel::LOG_ERROR, "ERROR", oss.str()); \
+        << yalgo::log::formatLog(format, ##__VA_ARGS__); \
+    yalgo::log::AsyncLogger::getInstance().log(yalgo::log::LogLevel::LOG_ERROR, "ERROR", oss.str()); \
 } while(0)
 #else
 #define YLOG_MODULE_ERROR(module, format, ...) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 2 // WARN级别
+#if YALGO_LOG_LEVEL >= 2 // WARN级别
 #define YLOG_MODULE_WARN(module, format, ...) do { \
     std::ostringstream oss; \
     oss << "[" << module << "] [" << __FILE__ << ":" << __LINE__ << ":" << __func__ << "] " \
-        << yutils::log::formatLog(format, ##__VA_ARGS__); \
-    yutils::log::AsyncLogger::getInstance().log(yutils::log::LogLevel::WARN, "WARN", oss.str()); \
+        << yalgo::log::formatLog(format, ##__VA_ARGS__); \
+    yalgo::log::AsyncLogger::getInstance().log(yalgo::log::LogLevel::WARN, "WARN", oss.str()); \
 } while(0)
 #else
 #define YLOG_MODULE_WARN(module, format, ...) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 4 // DEBUG级别
+#if YALGO_LOG_LEVEL >= 4 // DEBUG级别
 #define YLOG_MODULE_DEBUG(module, format, ...) do { \
     std::ostringstream oss; \
     oss << "[" << module << "] [" << __FILE__ << ":" << __LINE__ << ":" << __func__ << "] " \
-        << yutils::log::formatLog(format, ##__VA_ARGS__); \
-    yutils::log::AsyncLogger::getInstance().log(yutils::log::LogLevel::DEBUG, "DEBUG", oss.str()); \
+        << yalgo::log::formatLog(format, ##__VA_ARGS__); \
+    yalgo::log::AsyncLogger::getInstance().log(yalgo::log::LogLevel::DEBUG, "DEBUG", oss.str()); \
 } while(0)
 #else
 #define YLOG_MODULE_DEBUG(module, format, ...) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 3 // INFO级别
+#if YALGO_LOG_LEVEL >= 3 // INFO级别
 #define YLOG_MODULE_INFO(module, format, ...) do { \
     std::ostringstream oss; \
     oss << "[" << module << "] [" << __FILE__ << ":" << __LINE__ << ":" << __func__ << "] " \
-        << yutils::log::formatLog(format, ##__VA_ARGS__); \
-    yutils::log::AsyncLogger::getInstance().log(yutils::log::LogLevel::INFO, "INFO", oss.str()); \
+        << yalgo::log::formatLog(format, ##__VA_ARGS__); \
+    yalgo::log::AsyncLogger::getInstance().log(yalgo::log::LogLevel::INFO, "INFO", oss.str()); \
 } while(0)
 #else
 #define YLOG_MODULE_INFO(module, format, ...) do {} while(0)
 #endif
 
 // 流式日志宏
-#if YUTILS_LOG_LEVEL >= 1 // LOG_ERROR级别
-#define YLOG_ERROR_STREAM yutils::log::LogStream(yutils::log::LogLevel::LOG_ERROR, "ERROR", __FILE__, __LINE__, __func__)
+#if YALGO_LOG_LEVEL >= 1 // LOG_ERROR级别
+#define YLOG_ERROR_STREAM yalgo::log::LogStream(yalgo::log::LogLevel::LOG_ERROR, "ERROR", __FILE__, __LINE__, __func__)
 #else
 #define YLOG_ERROR_STREAM do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 2 // WARN级别
-#define YLOG_WARN_STREAM yutils::log::LogStream(yutils::log::LogLevel::WARN, "WARN", __FILE__, __LINE__, __func__)
+#if YALGO_LOG_LEVEL >= 2 // WARN级别
+#define YLOG_WARN_STREAM yalgo::log::LogStream(yalgo::log::LogLevel::WARN, "WARN", __FILE__, __LINE__, __func__)
 #else
 #define YLOG_WARN_STREAM do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 3 // INFO级别
-#define YLOG_INFO_STREAM yutils::log::LogStream(yutils::log::LogLevel::INFO, "INFO", __FILE__, __LINE__, __func__)
+#if YALGO_LOG_LEVEL >= 3 // INFO级别
+#define YLOG_INFO_STREAM yalgo::log::LogStream(yalgo::log::LogLevel::INFO, "INFO", __FILE__, __LINE__, __func__)
 #else
 #define YLOG_INFO_STREAM do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 4 // DEBUG级别
-#define YLOG_DEBUG_STREAM yutils::log::LogStream(yutils::log::LogLevel::DEBUG, "DEBUG", __FILE__, __LINE__, __func__)
+#if YALGO_LOG_LEVEL >= 4 // DEBUG级别
+#define YLOG_DEBUG_STREAM yalgo::log::LogStream(yalgo::log::LogLevel::DEBUG, "DEBUG", __FILE__, __LINE__, __func__)
 #else
 #define YLOG_DEBUG_STREAM do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 1 // ERROR级别
-#define YLOG_MODULE_ERROR_STREAM(module) yutils::log::LogStream(yutils::log::LogLevel::LOG_ERROR, "ERROR", __FILE__, __LINE__, __func__, module)
+#if YALGO_LOG_LEVEL >= 1 // ERROR级别
+#define YLOG_MODULE_ERROR_STREAM(module) yalgo::log::LogStream(yalgo::log::LogLevel::LOG_ERROR, "ERROR", __FILE__, __LINE__, __func__, module)
 #else
 #define YLOG_MODULE_ERROR_STREAM(module) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 2 // WARN级别
-#define YLOG_MODULE_WARN_STREAM(module) yutils::log::LogStream(yutils::log::LogLevel::WARN, "WARN", __FILE__, __LINE__, __func__, module)
+#if YALGO_LOG_LEVEL >= 2 // WARN级别
+#define YLOG_MODULE_WARN_STREAM(module) yalgo::log::LogStream(yalgo::log::LogLevel::WARN, "WARN", __FILE__, __LINE__, __func__, module)
 #else
 #define YLOG_MODULE_WARN_STREAM(module) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 3 // INFO级别
-#define YLOG_MODULE_INFO_STREAM(module) yutils::log::LogStream(yutils::log::LogLevel::INFO, "INFO", __FILE__, __LINE__, __func__, module)
+#if YALGO_LOG_LEVEL >= 3 // INFO级别
+#define YLOG_MODULE_INFO_STREAM(module) yalgo::log::LogStream(yalgo::log::LogLevel::INFO, "INFO", __FILE__, __LINE__, __func__, module)
 #else
 #define YLOG_MODULE_INFO_STREAM(module) do {} while(0)
 #endif
 
-#if YUTILS_LOG_LEVEL >= 4 // DEBUG级别
-#define YLOG_MODULE_DEBUG_STREAM(module) yutils::log::LogStream(yutils::log::LogLevel::DEBUG, "DEBUG", __FILE__, __LINE__, __func__, module)
+#if YALGO_LOG_LEVEL >= 4 // DEBUG级别
+#define YLOG_MODULE_DEBUG_STREAM(module) yalgo::log::LogStream(yalgo::log::LogLevel::DEBUG, "DEBUG", __FILE__, __LINE__, __func__, module)
 #else
 #define YLOG_MODULE_DEBUG_STREAM(module) do {} while(0)
 #endif
 
-#endif // YUTILS_SDK_LOG_ASYNC_LOGGER_H
+#endif // YALGO_SDK_LOG_ASYNC_LOGGER_H

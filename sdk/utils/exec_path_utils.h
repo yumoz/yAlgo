@@ -1,18 +1,18 @@
-﻿#ifndef YUTILS_SDK_UTILS_EXEC_PATH_UTILS_H
-#define YUTILS_SDK_UTILS_EXEC_PATH_UTILS_H
+#ifndef YALGO_SDK_UTILS_EXEC_PATH_UTILS_H
+#define YALGO_SDK_UTILS_EXEC_PATH_UTILS_H
 
 #include <string>
 #include <stdexcept>
 #include "utils_exports.h"
 
-namespace yutils {
+namespace yalgo {
 namespace utils {
 
 /**
  * 跨平台可执行文件路径工具类
  * 兼容 C++11/C++14/C++17，不依赖 C++17 filesystem 库
  */
-class YUTILS_UTILS_API ExecPathUtils {
+class YALGO_UTILS_API ExecPathUtils {
 public:
   /**
    * 获取当前可执行文件的目录路径
@@ -61,6 +61,6 @@ private:
 };
 
 } // namespace utils
-} // namespace yutils
+} // namespace yalgo
 
-#endif // YUTILS_SDK_UTILS_EXEC_PATH_UTILS_H
+#endif // YALGO_SDK_UTILS_EXEC_PATH_UTILS_H

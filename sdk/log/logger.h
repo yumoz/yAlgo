@@ -1,7 +1,7 @@
 /**
  * @file Logger.h
  * @brief 日志SDK统一入口头文件
- * @author yUtils Team
+ * @author yAlgo Team
  * @date 2025-12-07
  * @version 1.0.0
  *
@@ -14,10 +14,10 @@
  * 6. 模块/关键词过滤
  */
 
-#ifndef YUTILS_LOG_LOGGER_H
-#define YUTILS_LOG_LOGGER_H
+#ifndef YALGO_LOG_LOGGER_H
+#define YALGO_LOG_LOGGER_H
 
 #include "version.h"
 #include "async_logger.h"
 
-#endif // YUTILS_LOG_LOGGER_H
+#endif // YALGO_LOG_LOGGER_H

@@ -1,7 +1,7 @@
 /**
  * @file AsyncLogger.cpp
  * @brief 高性能异步日志模块实现文件
- * @author yUtils Team
+ * @author yAlgo Team
  * @date 2025-12-07
  * @version 1.0.0
  */
@@ -28,7 +28,7 @@
 #include <sys/stat.h>
 #endif
 
-namespace yutils {
+namespace yalgo {
 namespace log {
 
 // 格式化字符串实现
@@ -277,7 +277,7 @@ void AsyncLogger::loadConfigFromEnv() {
     std::lock_guard<std::mutex> lock(config_mutex_);
 
     // 1. 加载日志级别
-    const char* level_env = getenv("YUTILS_LOG_LEVEL");
+    const char* level_env = getenv("YALGO_LOG_LEVEL");
     if (level_env) {
         LogLevel level = parseLogLevel(level_env);
         runtime_level_.store(level);
@@ -285,7 +285,7 @@ void AsyncLogger::loadConfigFromEnv() {
     }
 
     // 2. 加载颜色配置
-    const char* color_env = getenv("YUTILS_LOG_COLOR");
+    const char* color_env = getenv("YALGO_LOG_COLOR");
     if (color_env) {
         config_.enable_color = (std::string(color_env) == "1" || std::string(color_env) == "true");
     }
@@ -590,4 +590,4 @@ void AsyncLogger::processLogs() {
 
 
 } // namespace log
-} // namespace yutils
+} // namespace yalgo

@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # 定义日志SDK库名称和版本
-set(LOG_SDK_NAME "yutils_log")
+set(LOG_SDK_NAME "yalgo_log")
 set(YUTILS_LOG_VERSION_MAJOR 1)
 set(YUTILS_LOG_VERSION_MINOR 0)
 set(YUTILS_LOG_VERSION_PATCH 0)
@@ -69,7 +69,7 @@ if(WIN32)
         # 文件描述
         OUTPUT_NAME "${LOG_SDK_NAME}"
         # 设置DLL资源编译器的定义
-        DEFINE_SYMBOL "YUTILS_LOG_EXPORTS"
+        DEFINE_SYMBOL "YALGO_LOG_EXPORTS"
     )
     
     # 创建Windows版本资源文件的内容
@@ -84,7 +84,7 @@ if(WIN32)
 endif()
 
 # 添加编译定义
-target_compile_definitions(${LOG_SDK_NAME} PRIVATE YUTILS_LOG_EXPORTS)
+target_compile_definitions(${LOG_SDK_NAME} PRIVATE YALGO_LOG_EXPORTS)
 
 # 安装规则
 install(TARGETS ${LOG_SDK_NAME}
@@ -95,6 +95,6 @@ install(TARGETS ${LOG_SDK_NAME}
 
 # 安装头文件
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/sdk/log/
-    DESTINATION include/yutils/log
+    DESTINATION include/yAlgo/log
     FILES_MATCHING PATTERN "*.h"
 )

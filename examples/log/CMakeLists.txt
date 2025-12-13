@@ -15,14 +15,16 @@ string(TIMESTAMP LOG_EXAMPLE_BUILD_DATE "%Y-%m-%d")
 string(TIMESTAMP LOG_EXAMPLE_BUILD_TIME "%H:%M:%S")
 
 # 添加可执行文件
-add_executable(${EXAMPLE_NAME} log_example.cpp)
+add_executable(${EXAMPLE_NAME} 
+    log_test.cpp
+)
 
 # 包含头文件搜索路径
 include_directories(${CMAKE_SOURCE_DIR}/sdk)
 
-# 链接日志SDK动态库
+# 链接SDK动态库
 target_link_libraries(${EXAMPLE_NAME} PRIVATE
-    yutils_log
+    yalgo_log
 )
 
 # 设置输出目录

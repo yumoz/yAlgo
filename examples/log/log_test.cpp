@@ -1,11 +1,28 @@
-#include "../sdk/log/logger.h"
-#include <iostream>
-#include <thread>
-#include <vector>
-#include <chrono>
+#include "log_test.h"
+
+namespace yalgo {
+namespace examples {
+
+// 初始化日志系统
+void LogTest::initLogger() {
+    std::cout << "初始化日志系统..." << std::endl;
+    
+    yalgo::log::LogConfig config;
+    config.runtime_level = yalgo::log::LogLevel::INFO;
+    config.enable_console = true;
+    config.enable_file = true;
+    config.enable_color = true;
+    config.log_file = "log_example.log";
+    config.max_file_size = 10 * 1024 * 1024;  // 10MB
+    config.max_backup_files = 5;
+    
+    yalgo::log::AsyncLogger::getInstance().init(config);
+    std::cout << "日志系统初始化完成!" << std::endl;
+    std::cout << "\n";
+}
 
 // 示例函数：演示基本日志功能
-void demoBasicLogging() {
+void LogTest::demoBasicLogging() {
     std::cout << "=== 基本日志功能演示 ===" << std::endl;
     
     // 基本日志输出
@@ -18,7 +35,7 @@ void demoBasicLogging() {
 }
 
 // 示例函数：演示模块日志
-void demoModuleLogging() {
+void LogTest::demoModuleLogging() {
     std::cout << "=== 模块日志功能演示 ===" << std::endl;
     
     // 模块日志输出
@@ -31,7 +48,7 @@ void demoModuleLogging() {
 }
 
 // 示例函数：演示流式日志
-void demoStreamingLogging() {
+void LogTest::demoStreamingLogging() {
     std::cout << "=== 流式日志功能演示 ===" << std::endl;
     
     // 流式日志输出
@@ -44,12 +61,12 @@ void demoStreamingLogging() {
 }
 
 // 示例函数：演示动态日志级别调整
-void demoRuntimeLevelAdjustment() {
+void LogTest::demoRuntimeLevelAdjustment() {
     std::cout << "=== 动态日志级别调整演示 ===" << std::endl;
     
     // 调整为WARN级别
     std::cout << "将日志级别设置为WARN:" << std::endl;
-    yutils::log::AsyncLogger::getInstance().setRuntimeLogLevel(yutils::log::LogLevel::WARN);
+    yalgo::log::AsyncLogger::getInstance().setRuntimeLogLevel(yalgo::log::LogLevel::WARN);
     YLOG_DEBUG("这条调试日志不会显示");
     YLOG_INFO("这条信息日志不会显示");
     YLOG_WARN("这条警告日志会显示");
@@ -57,14 +74,14 @@ void demoRuntimeLevelAdjustment() {
     
     // 调整回INFO级别
     std::cout << "将日志级别设置回INFO:" << std::endl;
-    yutils::log::AsyncLogger::getInstance().setRuntimeLogLevel(yutils::log::LogLevel::INFO);
+    yalgo::log::AsyncLogger::getInstance().setRuntimeLogLevel(yalgo::log::LogLevel::INFO);
     YLOG_INFO("现在信息日志可以显示了");
     
     std::cout << "\n";
 }
 
 // 示例函数：演示多线程日志
-void demoMultiThreadLogging() {
+void LogTest::demoMultiThreadLogging() {
     std::cout << "=== 多线程日志功能演示 ===" << std::endl;
     
     std::vector<std::thread> threads;
@@ -85,11 +102,11 @@ void demoMultiThreadLogging() {
 }
 
 // 示例函数：演示性能统计
-void demoPerformanceStats() {
+void LogTest::demoPerformanceStats() {
     std::cout << "=== 性能统计功能演示 ===" << std::endl;
     
     // 输出统计信息
-    auto stats = yutils::log::AsyncLogger::getInstance().getStats();
+    auto stats = yalgo::log::AsyncLogger::getInstance().getStats();
     std::cout << "日志统计信息:" << std::endl;
     std::cout << "  - 总日志数: " << stats.total_logs << std::endl;
     std::cout << "  - 丢弃的日志数: " << stats.dropped_logs << std::endl;
@@ -100,44 +117,29 @@ void demoPerformanceStats() {
 }
 
 // 示例函数：演示配置更新
-void demoConfigUpdate() {
+void LogTest::demoConfigUpdate() {
     std::cout << "=== 配置更新功能演示 ===" << std::endl;
     
-    yutils::log::LogConfig newConfig;
-    newConfig.runtime_level = yutils::log::LogLevel::INFO;
+    yalgo::log::LogConfig newConfig;
+    newConfig.runtime_level = yalgo::log::LogLevel::INFO;
     newConfig.enable_console = true;
     newConfig.enable_file = false;  // 临时关闭文件日志
     newConfig.enable_color = true;
     
     std::cout << "更新日志配置，关闭文件输出:" << std::endl;
-    yutils::log::AsyncLogger::getInstance().updateConfig(newConfig);
+    yalgo::log::AsyncLogger::getInstance().updateConfig(newConfig);
     YLOG_INFO("这条日志只会输出到控制台");
     
     std::cout << "\n";
 }
 
-// 主函数
-int main() {
+// 运行所有测试
+void LogTest::runAllTests() {
     std::cout << "====================================================" << std::endl;
-    std::cout << "            yUtils 日志SDK 使用示例                " << std::endl;
+    std::cout << "            yAlgo 日志SDK 使用示例                " << std::endl;
     std::cout << "====================================================" << std::endl;
     
-    // 初始化日志器 - 使用默认配置
-    yutils::log::LogConfig config;
-    config.runtime_level = yutils::log::LogLevel::INFO;
-    config.enable_console = true;
-    config.enable_file = true;
-    config.enable_color = true;
-    config.log_file = "log_example.log";
-    config.max_file_size = 10 * 1024 * 1024;  // 10MB
-    config.max_backup_files = 5;
-    
-    std::cout << "初始化日志系统..." << std::endl;
-    yutils::log::AsyncLogger::getInstance().init(config);
-    std::cout << "日志系统初始化完成!" << std::endl;
-    std::cout << "\n";
-    
-    // 运行各种功能演示
+    initLogger();
     demoBasicLogging();
     demoModuleLogging();
     demoStreamingLogging();
@@ -152,8 +154,15 @@ int main() {
     demoPerformanceStats();
     
     std::cout << "====================================================" << std::endl;
-    std::cout << "                 示例演示结束                      " << std::endl;
+    std::cout << "                 日志模块示例演示结束                      " << std::endl;
     std::cout << "====================================================" << std::endl;
-    
+}
+
+} // namespace examples
+} // namespace yalgo
+
+// 日志模块测试程序的入口点
+int main() {
+    yalgo::examples::LogTest::runAllTests();
     return 0;
 }

@@ -36,7 +36,7 @@ function(yutils_install_lib)
     
     # 设置默认值
     if(NOT DEFINED INSTALL_INCLUDE_DEST)
-        set(INSTALL_INCLUDE_DEST "include/yUtils/${COMPONENT_NAME}")
+        set(INSTALL_INCLUDE_DEST "include/yAlgo/${COMPONENT_NAME}")
     endif()
     
     # 安装库文件

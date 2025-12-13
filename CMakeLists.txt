@@ -7,7 +7,7 @@ if(POLICY CMP0048)
 endif()
 
 # 项目名称和版本
-project(yUtils VERSION 1.0.0 LANGUAGES CXX)
+project(yAlgo VERSION 1.0.0 LANGUAGES CXX)
 
 # 设置安装前缀为sdk同级目录的install文件夹
 set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "安装目录" FORCE)
@@ -43,11 +43,12 @@ endif()
 # 添加子目录
 add_subdirectory(sdk/log)
 add_subdirectory(sdk/utils)
-add_subdirectory(examples/log_example)
+add_subdirectory(examples/log)
+add_subdirectory(examples/utils)
 
 # 创建复制文件到根目录的自定义目标
 add_custom_target(copy_binaries ALL
-    DEPENDS yutils_log yutils_utils log_example
+    DEPENDS yalgo_log yalgo_utils log_example utils_example
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/bin" "${CMAKE_SOURCE_DIR}/bin"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/lib" "${CMAKE_SOURCE_DIR}/lib"
     COMMENT "复制生成的文件到项目根目录的bin和lib文件夹"
