@@ -43,6 +43,20 @@ set_target_properties(${UTILS_SDK_NAME} PROPERTIES
     PROJECT_VERSION_PATCH "${YUTILS_UTILS_VERSION_PATCH}"
 )
 
+# 安装规则 - 动态库
+install(TARGETS ${UTILS_SDK_NAME}
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
+# 安装头文件
+install(FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/exec_path_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils_exports.h
+    DESTINATION include/yUtils/utils
+)
+
 # Windows平台特定的版本信息设置
 if(WIN32)
     # 为Windows DLL添加版本信息

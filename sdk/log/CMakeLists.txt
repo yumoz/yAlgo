@@ -43,6 +43,22 @@ set_target_properties(${LOG_SDK_NAME} PROPERTIES
     PROJECT_VERSION_PATCH "${YUTILS_LOG_VERSION_PATCH}"
 )
 
+# 安装规则 - 动态库
+install(TARGETS ${LOG_SDK_NAME}
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
+# 安装头文件
+install(FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/logger.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/async_logger.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/log_exports.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/version.h
+    DESTINATION include/yUtils/log
+)
+
 # Windows平台特定的版本信息设置
 if(WIN32)
     # 为Windows DLL添加版本信息

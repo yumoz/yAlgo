@@ -9,6 +9,9 @@ endif()
 # 项目名称和版本
 project(yUtils VERSION 1.0.0 LANGUAGES CXX)
 
+# 设置安装前缀为sdk同级目录的install文件夹
+set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "安装目录" FORCE)
+
 # 设置C++标准
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -52,6 +55,14 @@ add_custom_target(copy_binaries ALL
 add_custom_target(clean-all
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_SOURCE_DIR}/bin"
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_SOURCE_DIR}/lib"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_SOURCE_DIR}/install"
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}"
     COMMENT "清理所有生成的文件和目录"
+)
+
+# 安装规则 - 头文件安装
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/sdk/
+    DESTINATION include/yUtils
+    FILES_MATCHING PATTERN "*.h"
+    PATTERN "*.hpp"
 )
