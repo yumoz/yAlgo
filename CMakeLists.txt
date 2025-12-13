@@ -16,10 +16,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # yUtils 项目不依赖Qt，使用纯C++实现
 
-# 设置输出目录
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+# 确保输出目录存在
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+
+# 设置输出目录 - 统一放在项目根目录下的bin和lib文件夹
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
 
 # 包含头文件搜索路径
 include_directories(${CMAKE_SOURCE_DIR}/sdk)
@@ -36,23 +40,18 @@ add_subdirectory(sdk/log)
 add_subdirectory(sdk/utils)
 add_subdirectory(examples/log_example)
 
-# 查找Doxygen
-find_package(Doxygen)
+# 创建复制文件到根目录的自定义目标
+add_custom_target(copy_binaries ALL
+    DEPENDS yutils_log yutils_utils log_example
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/bin" "${CMAKE_SOURCE_DIR}/bin"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/lib" "${CMAKE_SOURCE_DIR}/lib"
+    COMMENT "复制生成的文件到项目根目录的bin和lib文件夹"
+)
 
-if(DOXYGEN_FOUND)
-    # 配置Doxygen
-    set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs)
-    set(DOXYGEN_IN ${CMAKE_CURRENT_BINARY_DIR}/CMakeDoxyfile.in)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-
-    # 配置Doxyfile
-    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-
-    # 创建文档目标
-    add_custom_target(doc
-        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "正在生成Doxygen文档..."
-        VERBATIM
-    )
-endif(DOXYGEN_FOUND)
+# 项目清理目标
+add_custom_target(clean-all
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_SOURCE_DIR}/bin"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_SOURCE_DIR}/lib"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}"
+    COMMENT "清理所有生成的文件和目录"
+)
