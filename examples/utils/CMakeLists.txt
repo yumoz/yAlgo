@@ -45,6 +45,22 @@ if(EXISTS "${CMAKE_BINARY_DIR}/etc/utils_example_version.conf")
     set(EXAMPLE_CONFIG_FILES "${CMAKE_BINARY_DIR}/etc/utils_example_version.conf")
 endif()
 
+# Windows平台特定的版本信息设置
+if(WIN32)
+    # 为Windows可执行文件添加版本信息和图标
+    configure_file(
+        "${CMAKE_SOURCE_DIR}/cmake/templates/utils_app_version.rc.in"
+        "${CMAKE_BINARY_DIR}/resources/${EXAMPLE_NAME}_version.rc"
+        @ONLY
+    )
+    
+    # 添加版本资源文件到可执行文件
+    target_sources(${EXAMPLE_NAME} PRIVATE "${CMAKE_BINARY_DIR}/resources/${EXAMPLE_NAME}_version.rc")
+    
+    # 复制logo.png到构建目录，以便资源编译器能找到它
+    file(COPY "${CMAKE_SOURCE_DIR}/cmake/templates/logo.png" DESTINATION "${CMAKE_BINARY_DIR}/resources/")
+endif()
+
 # 调用应用程序安装函数
 yutils_install_app(
     TARGET_NAME ${EXAMPLE_NAME}

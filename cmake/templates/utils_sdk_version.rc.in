@@ -1,0 +1,39 @@
+// Windows 版本资源文件模板 - 用于utils SDK库
+#include <windows.h>
+
+// IDI_ICON1 ICON "logo.png"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION @UTILS_SDK_VERSION_MAJOR@,@UTILS_SDK_VERSION_MINOR@,@UTILS_SDK_VERSION_PATCH@,0
+ PRODUCTVERSION @UTILS_SDK_VERSION_MAJOR@,@UTILS_SDK_VERSION_MINOR@,@UTILS_SDK_VERSION_PATCH@,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L  // 2L = 动态链接库
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0" // 中文(中国), Unicode
+        BEGIN
+            VALUE "CompanyName", "yAlgo Project"
+            VALUE "FileDescription", "utils SDK Library"
+            VALUE "FileVersion", "@UTILS_SDK_VERSION@"
+            VALUE "InternalName", "libyalgo_utils"
+            VALUE "LegalCopyright", "Copyright (C) @UTILS_SDK_BUILD_DATE@"
+            VALUE "OriginalFilename", "libyalgo_utils.dll"
+            VALUE "ProductName", "yAlgo SDK"
+            VALUE "ProductVersion", "@UTILS_SDK_VERSION@"
+            VALUE "BuildDate", "@UTILS_SDK_BUILD_DATE@"
+            VALUE "BuildTime", "@UTILS_SDK_BUILD_TIME@"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200 // 中文(中国), Unicode
+    END
+END

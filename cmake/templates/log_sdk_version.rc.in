@@ -1,0 +1,39 @@
+// Windows 版本资源文件模板 - 用于log SDK库
+#include <windows.h>
+
+// IDI_ICON1 ICON "logo.png"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION @LOG_SDK_VERSION_MAJOR@,@LOG_SDK_VERSION_MINOR@,@LOG_SDK_VERSION_PATCH@,0
+ PRODUCTVERSION @LOG_SDK_VERSION_MAJOR@,@LOG_SDK_VERSION_MINOR@,@LOG_SDK_VERSION_PATCH@,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L  // 2L = 动态链接库
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0" // 中文(中国), Unicode
+        BEGIN
+            VALUE "CompanyName", "yAlgo Project"
+            VALUE "FileDescription", "log SDK Library"
+            VALUE "FileVersion", "@LOG_SDK_VERSION@"
+            VALUE "InternalName", "libyalgo_log"
+            VALUE "LegalCopyright", "Copyright (C) @LOG_SDK_BUILD_DATE@"
+            VALUE "OriginalFilename", "libyalgo_log.dll"
+            VALUE "ProductName", "yAlgo SDK"
+            VALUE "ProductVersion", "@LOG_SDK_VERSION@"
+            VALUE "BuildDate", "@LOG_SDK_BUILD_DATE@"
+            VALUE "BuildTime", "@LOG_SDK_BUILD_TIME@"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200 // 中文(中国), Unicode
+    END
+END

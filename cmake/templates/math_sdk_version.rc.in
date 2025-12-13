@@ -1,0 +1,39 @@
+// Windows 版本资源文件模板 - 用于math SDK库
+#include <windows.h>
+
+// IDI_ICON1 ICON "logo.png"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION @MATH_SDK_VERSION_MAJOR@,@MATH_SDK_VERSION_MINOR@,@MATH_SDK_VERSION_PATCH@,0
+ PRODUCTVERSION @MATH_SDK_VERSION_MAJOR@,@MATH_SDK_VERSION_MINOR@,@MATH_SDK_VERSION_PATCH@,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L  // 2L = 动态链接库
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0" // 中文(中国), Unicode
+        BEGIN
+            VALUE "CompanyName", "yAlgo Project"
+            VALUE "FileDescription", "math SDK Library"
+            VALUE "FileVersion", "@MATH_SDK_VERSION@"
+            VALUE "InternalName", "libyalgo_math"
+            VALUE "LegalCopyright", "Copyright (C) @MATH_SDK_BUILD_DATE@"
+            VALUE "OriginalFilename", "libyalgo_math.dll"
+            VALUE "ProductName", "yAlgo SDK"
+            VALUE "ProductVersion", "@MATH_SDK_VERSION@"
+            VALUE "BuildDate", "@MATH_SDK_BUILD_DATE@"
+            VALUE "BuildTime", "@MATH_SDK_BUILD_TIME@"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200 // 中文(中国), Unicode
+    END
+END

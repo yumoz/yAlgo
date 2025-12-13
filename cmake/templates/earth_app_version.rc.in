@@ -1,0 +1,39 @@
+// Windows 版本资源文件模板 - 用于earth应用程序
+#include <windows.h>
+
+IDI_ICON1 ICON "logo.ico"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION @EARTH_EXAMPLE_VERSION_MAJOR@,@EARTH_EXAMPLE_VERSION_MINOR@,@EARTH_EXAMPLE_VERSION_PATCH@,0
+ PRODUCTVERSION @EARTH_EXAMPLE_VERSION_MAJOR@,@EARTH_EXAMPLE_VERSION_MINOR@,@EARTH_EXAMPLE_VERSION_PATCH@,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L  // 1L = 可执行文件
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0" // 中文(中国), Unicode
+        BEGIN
+            VALUE "CompanyName", "yAlgo Project"
+            VALUE "FileDescription", "earth_example Application"
+            VALUE "FileVersion", "@EARTH_EXAMPLE_VERSION@"
+            VALUE "InternalName", "earth_example"
+            VALUE "LegalCopyright", "Copyright (C) @EARTH_EXAMPLE_BUILD_DATE@"
+            VALUE "OriginalFilename", "earth_example.exe"
+            VALUE "ProductName", "yAlgo SDK"
+            VALUE "ProductVersion", "@EARTH_EXAMPLE_VERSION@"
+            VALUE "BuildDate", "@EARTH_EXAMPLE_BUILD_DATE@"
+            VALUE "BuildTime", "@EARTH_EXAMPLE_BUILD_TIME@"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200 // 中文(中国), Unicode
+    END
+END
