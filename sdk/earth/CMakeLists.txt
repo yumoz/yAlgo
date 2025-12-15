@@ -21,6 +21,7 @@ include_directories(${CMAKE_SOURCE_DIR}/sdk)
 set(SOURCES
     earth_point.cpp
     earth_converter.cpp
+    earth_geometry.cpp
 )
 
 # 创建动态库
@@ -46,6 +47,7 @@ include(YuLibInstall)
 set(EARTH_HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/earth_point.h
     ${CMAKE_CURRENT_SOURCE_DIR}/earth_converter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/earth_geometry.h
     ${CMAKE_CURRENT_SOURCE_DIR}/earth_exports.h
     ${CMAKE_CURRENT_SOURCE_DIR}/version.h
 )

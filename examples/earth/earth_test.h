@@ -2,6 +2,8 @@
 
 #include "../../sdk/earth/earth_point.h"
 #include "../../sdk/earth/earth_converter.h"
+#include "../../sdk/earth/earth_geometry.h"
+#include <vector>
 #include <iostream>
 
 namespace yalgo {
@@ -72,6 +74,21 @@ public:
      * 演示通视判断功能
      */
     static void demoLineOfSight();
+    
+    /**
+     * 演示WGS84与墨卡托坐标系转换
+     */
+    static void demoWgs84ToMercatorConversion();
+    
+    /**
+     * 演示点在多边形内判断功能
+     */
+    static void demoPointInPolygon();
+    
+    /**
+     * 演示GEO卫星中国区域覆盖测试
+     */
+    static void demoGEOCoverageInChina();
     
     /**
      * 运行所有测试

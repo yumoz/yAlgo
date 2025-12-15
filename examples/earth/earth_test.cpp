@@ -384,6 +384,129 @@ void EarthTest::demoLineOfSight() {
     std::cout << "两点是否通视: " << (visible3 ? "是" : "否") << std::endl;
 }
 
+// 演示WGS84与墨卡托坐标系转换
+void EarthTest::demoWgs84ToMercatorConversion() {
+    std::cout << "\n=== WGS84与墨卡托坐标系转换 ===\n";
+    
+    EarthConverter converter;
+    
+    // 北京（天安门）
+    EarthPoint beijing(116.3974, 39.9093, 50.0);
+    std::cout << "WGS84坐标: " << beijing.toString() << std::endl;
+    
+    // 转换为墨卡托坐标
+    auto mercator = converter.wgs84ToMercator(beijing);
+    std::cout << "墨卡托坐标: " << mercator.toString() << std::endl;
+    
+    // 转换回WGS84坐标
+    auto backToWgs84 = converter.mercatorToWGS84(mercator);
+    std::cout << "转换回WGS84: " << backToWgs84.toString() << std::endl;
+    
+    // 计算转换误差
+    std::cout << std::fixed << std::setprecision(9);
+    std::cout << "经度误差: " << std::abs(beijing.longitude() - backToWgs84.longitude()) << "度" << std::endl;
+    std::cout << "纬度误差: " << std::abs(beijing.latitude() - backToWgs84.latitude()) << "度" << std::endl;
+}
+
+// 演示点在多边形内判断功能
+void EarthTest::demoPointInPolygon() {
+    std::cout << "\n=== 点在多边形内判断 ===\n";
+    
+    EarthGeometry geometry;
+    
+    // 创建一个简单的多边形（矩形）
+    std::vector<EarthPoint> polygon = {
+        EarthPoint(116.0, 39.0),
+        EarthPoint(117.0, 39.0),
+        EarthPoint(117.0, 40.0),
+        EarthPoint(116.0, 40.0),
+        EarthPoint(116.0, 39.0) // 闭合多边形
+    };
+    
+    std::cout << "多边形顶点: " << std::endl;
+    for (size_t i = 0; i < polygon.size(); i++) {
+        std::cout << "  " << i + 1 << ": " << polygon[i].toString() << std::endl;
+    }
+    
+    // 测试点
+    std::vector<EarthPoint> testPoints = {
+        EarthPoint(116.5, 39.5), // 多边形内部
+        EarthPoint(116.2, 39.2), // 多边形内部
+        EarthPoint(115.0, 39.0), // 多边形外部
+        EarthPoint(116.5, 40.5), // 多边形外部
+        EarthPoint(116.0, 39.5)  // 多边形边界上
+    };
+    
+    // 使用UTM投影测试
+    std::cout << "\nUTM投影下点在多边形内判断结果: " << std::endl;
+    for (size_t i = 0; i < testPoints.size(); i++) {
+        bool isIn = geometry.isPointInPolygon(testPoints[i], polygon, EarthGeometry::ProjectionType::UTM);
+        std::cout << "  点" << i + 1 << " (" << testPoints[i].longitude() << ", " << testPoints[i].latitude() 
+                  << "): " << (isIn ? "在多边形内" : "不在多边形内") << std::endl;
+    }
+    
+    // 使用墨卡托投影测试
+    std::cout << "\n墨卡托投影下点在多边形内判断结果: " << std::endl;
+    for (size_t i = 0; i < testPoints.size(); i++) {
+        bool isIn = geometry.isPointInPolygon(testPoints[i], polygon, EarthGeometry::ProjectionType::MERCATOR);
+        std::cout << "  点" << i + 1 << " (" << testPoints[i].longitude() << ", " << testPoints[i].latitude() 
+                  << "): " << (isIn ? "在多边形内" : "不在多边形内") << std::endl;
+    }
+}
+
+// 演示GEO卫星中国区域覆盖测试
+void EarthTest::demoGEOCoverageInChina() {
+    std::cout << "\n=== GEO卫星中国区域覆盖测试 ===\n";
+    
+    EarthGeometry geometry;
+    
+    // 定义GEO卫星中国覆盖区闭合多边形（经纬度顶点，模拟105°E GEO卫星波束）
+    std::vector<EarthPoint> geoChinaCoverage = {
+        EarthPoint(73.5, 53.5),   // 顶点1：漠河（最北）
+        EarthPoint(135.0, 48.5),  // 顶点2：抚远（最东）
+        EarthPoint(122.0, 20.0),  // 顶点3：三亚（最南）
+        EarthPoint(73.5, 21.0),   // 顶点4：西双版纳（最西）
+        EarthPoint(73.5, 53.5)    // 闭合：与第一点重合
+    };
+    std::cout << "GEO覆盖区范围：漠河→抚远→三亚→西双版纳→漠河" << std::endl;
+    
+    // 定义测试城市（含覆盖内/外典型城市，覆盖边界城市）
+    std::vector<std::pair<EarthPoint, std::string>> testCities = {
+        {EarthPoint(116.4, 39.9), "北京（覆盖内）"},
+        {EarthPoint(121.4, 31.2), "上海（覆盖内）"},
+        {EarthPoint(104.0, 30.6), "成都（覆盖内）"},
+        {EarthPoint(113.2, 23.1), "广州（覆盖内）"},
+        {EarthPoint(87.6, 43.8),  "乌鲁木齐（覆盖边界）"},
+        {EarthPoint(110.0, 18.4), "海口（覆盖内）"},
+        {EarthPoint(127.4, 43.8), "哈尔滨（覆盖内）"},
+        {EarthPoint(100.5, 19.0), "西双版纳（覆盖内，顶点4）"},
+        {EarthPoint(140.0, 35.0), "东京（日本，覆盖外）"},
+        {EarthPoint(90.0, 60.0),  "西伯利亚（俄罗斯，覆盖外）"}
+    };
+    
+    // 测试每个城市是否在GEO覆盖内（使用UTM投影）
+    std::cout << "\n城市覆盖判断结果（UTM投影）：" << std::endl;
+    for (const auto& city : testCities) {
+        const EarthPoint& cityLatLng = city.first;
+        const std::string& cityName = city.second;
+        bool isIn = geometry.isPointInPolygon(cityLatLng, geoChinaCoverage, EarthGeometry::ProjectionType::UTM);
+        std::cout << "  " << cityName << "：" << (isIn ? "✅ 在覆盖区内" : "❌ 在覆盖区外") 
+                  << " → 坐标：(" << cityLatLng.longitude() << "°, " << cityLatLng.latitude() << "°)" << std::endl;
+    }
+    
+    // 对测试城市进行投影精度统计
+    std::vector<EarthPoint> cityPoints;
+    for (const auto& city : testCities) {
+        cityPoints.push_back(city.first);
+    }
+    
+    std::cout << "\nUTM投影精度统计：" << std::endl;
+    geometry.calcProjectionAccuracy(cityPoints, EarthGeometry::ProjectionType::UTM);
+    
+    std::cout << "\n墨卡托投影精度统计：" << std::endl;
+    geometry.calcProjectionAccuracy(cityPoints, EarthGeometry::ProjectionType::MERCATOR);
+}
+
 // 运行所有测试
 void EarthTest::runAllTests() {
     std::cout << "========================================\n";
@@ -401,6 +524,9 @@ void EarthTest::runAllTests() {
     demoVectorOperations();
     demoWgs84ToEcefConversion();
     demoWgs84ToUtmConversion();
+    demoWgs84ToMercatorConversion();
+    demoPointInPolygon();
+    demoGEOCoverageInChina();
     demoEllipsoidModels();
     demoLineOfSight();
     

@@ -114,6 +114,8 @@ cmake --build .
 cmake --install .
 ```
 
+cd build-win-x64-release; cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+
 ### 输出目录结构
 
 构建完成后，输出文件将按照以下结构组织：

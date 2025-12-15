@@ -46,6 +46,34 @@ public:
     };
 
     /**
+     * @brief 墨卡托坐标结构
+     */
+    struct MercatorCoordinate {
+        double x;  ///< 东向坐标（米）
+        double y;  ///< 北向坐标（米）
+        
+        /**
+         * @brief 默认构造函数
+         */
+        MercatorCoordinate() : x(0.0), y(0.0) {}
+        
+        /**
+         * @brief 带参数构造函数
+         * 
+         * @param x 东向坐标（米）
+         * @param y 北向坐标（米）
+         */
+        MercatorCoordinate(double x, double y) : x(x), y(y) {}
+        
+        /**
+         * @brief 将墨卡托坐标转换为字符串表示
+         * 
+         * @return std::string 墨卡托坐标的字符串表示
+         */
+        EARTH_API std::string toString() const;
+    };
+
+    /**
      * @brief ECEF笛卡尔坐标结构
      */
     struct ECEFCoordinate {
@@ -120,6 +148,22 @@ public:
      * @return EarthPoint WGS84经纬度坐标点
      */
     EarthPoint utmToWGS84(const UTMCoordinate& utm) const;
+    
+    /**
+     * @brief WGS84经纬度坐标转换为墨卡托坐标
+     * 
+     * @param point 经纬度坐标点
+     * @return MercatorCoordinate 墨卡托坐标
+     */
+    MercatorCoordinate wgs84ToMercator(const EarthPoint& point) const;
+    
+    /**
+     * @brief 墨卡托坐标转换为WGS84经纬度坐标
+     * 
+     * @param mercator 墨卡托坐标
+     * @return EarthPoint WGS84经纬度坐标点
+     */
+    EarthPoint mercatorToWGS84(const MercatorCoordinate& mercator) const;
 
     /**
      * @brief 获取椭球体的长半轴

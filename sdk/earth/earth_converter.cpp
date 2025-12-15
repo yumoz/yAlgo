@@ -23,6 +23,14 @@ std::string EarthConverter::ECEFCoordinate::toString() const {
     return oss.str();
 }
 
+// 墨卡托坐标的字符串表示
+std::string EarthConverter::MercatorCoordinate::toString() const {
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(3);
+    oss << "Mercator(x: " << x << ", y: " << y << ")";
+    return oss.str();
+}
+
 // 获取椭球体参数
 EarthConverter::EllipsoidParams EarthConverter::getEllipsoidParams(Ellipsoid ellipsoid) const {
     EllipsoidParams params;
@@ -334,6 +342,50 @@ bool EarthConverter::isVisible(const EarthPoint& point1, const EarthPoint& point
     // 如果投影点到原点的距离大于地球半径，则两点通视
     // 使用椭球体的长半轴作为地球半径近似值
     return PLength > m_params.semiMajorAxis;
+}
+
+// WGS84经纬度坐标转换为墨卡托坐标
+EarthConverter::MercatorCoordinate EarthConverter::wgs84ToMercator(const EarthPoint& point) const {
+    double lonDeg = point.longitude();
+    double latDeg = point.latitude();
+    
+    // 墨卡托投影的纬度范围限制
+    if (latDeg < -85.05 || latDeg > 85.05) {
+        return MercatorCoordinate(0.0, 0.0);
+    }
+    
+    double lonRad = lonDeg * M_PI / 180.0;
+    double latRad = latDeg * M_PI / 180.0;
+    
+    double x = m_params.semiMajorAxis * lonRad;
+    double y = m_params.semiMajorAxis * log(tan(M_PI / 4.0 + latRad / 2.0) * pow((1 - sqrt(m_params.eccentricitySquared) * sin(latRad)) / (1 + sqrt(m_params.eccentricitySquared) * sin(latRad)), sqrt(m_params.eccentricitySquared) / 2.0));
+    
+    return MercatorCoordinate(x, y);
+}
+
+// 墨卡托坐标转换为WGS84经纬度坐标
+EarthPoint EarthConverter::mercatorToWGS84(const MercatorCoordinate& mercator) const {
+    double x = mercator.x;
+    double y = mercator.y;
+    
+    // 墨卡托坐标范围限制
+    if (fabs(x) > 20037508.34 || fabs(y) > 20037508.34) {
+        return EarthPoint(0.0, 0.0, 0.0);
+    }
+    
+    double lonRad = x / m_params.semiMajorAxis;
+    double latRad = 2 * (atan(exp(y / m_params.semiMajorAxis)) - M_PI / 4.0);
+    
+    // 迭代计算纬度（3次迭代足以达到精度要求）
+    for (int i = 0; i < 3; i++) {
+        double eSinLat = sqrt(m_params.eccentricitySquared) * sin(latRad);
+        latRad = 2 * (atan(exp(y / m_params.semiMajorAxis) * pow((1 + eSinLat) / (1 - eSinLat), sqrt(m_params.eccentricitySquared) / 2.0)) - M_PI / 4.0);
+    }
+    
+    double lonDeg = lonRad * 180.0 / M_PI;
+    double latDeg = latRad * 180.0 / M_PI;
+    
+    return EarthPoint(lonDeg, latDeg, 0.0);
 }
 
 } // namespace earth
