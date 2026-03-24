@@ -161,5 +161,16 @@ std::string ExecPathUtils::normalizePath(const std::string& path) {
     return result;
 }
 
+// 获取当前系统类型
+std::string ExecPathUtils::getSystemType() {
+#ifdef _WIN32
+    return "windows";
+#elif __APPLE__
+    return "macos";
+#else
+    return "linux";
+#endif
+}
+
 } // namespace utils
 } // namespace yalgo

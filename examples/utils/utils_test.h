@@ -34,6 +34,11 @@ public:
     static void demoCheckFileInExeDir();
     
     /**
+     * 演示获取系统类型
+     */
+    static void demoSystemType();
+    
+    /**
      * 运行所有测试
      */
     static void runAllTests();

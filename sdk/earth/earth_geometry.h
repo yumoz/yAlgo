@@ -1,3 +1,9 @@
+/**
+ * @file earth_geometry.h
+ * @brief 地球几何计算类
+ * @author yAlgo Team
+ * @date 2026-03-24
+ */
 #pragma once
 
 #include "earth_exports.h"

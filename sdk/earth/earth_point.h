@@ -1,3 +1,9 @@
+/**
+ * @file earth_point.h
+ * @brief 经纬高坐标点类
+ * @author yAlgo Team
+ * @date 2026-03-24
+ */
 #pragma once
 
 #include "earth_exports.h"

@@ -1,5 +1,5 @@
 /**
- * @file AsyncLogger.h
+ * @file async_logger.h
  * @brief 高性能异步日志模块头文件
  * @author yAlgo Team
  * @date 2025-12-07

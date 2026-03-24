@@ -65,6 +65,29 @@ void UtilsTest::demoCheckFileInExeDir() {
     std::cout << "\n";
 }
 
+// 演示获取系统类型
+void UtilsTest::demoSystemType() {
+    std::cout << "=== 获取系统类型演示 ===" << std::endl;
+    
+    try {
+        std::string system_type = yalgo::utils::ExecPathUtils::getSystemType();
+        std::cout << "当前系统类型: " << system_type << std::endl;
+        
+        // 根据系统类型执行不同的命令
+        if (system_type == "windows") {
+            std::cout << "Windows 系统，使用 Windows 命令" << std::endl;
+        } else if (system_type == "macos") {
+            std::cout << "macOS 系统，使用 macOS 命令" << std::endl;
+        } else {
+            std::cout << "Linux 系统，使用 Linux 命令" << std::endl;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "获取系统类型失败: " << e.what() << std::endl;
+    }
+    
+    std::cout << "\n";
+}
+
 // 运行所有测试
 void UtilsTest::runAllTests() {
     std::cout << "====================================================" << std::endl;
@@ -75,6 +98,7 @@ void UtilsTest::runAllTests() {
     demoExecutableDir();
     demoFileInExeDir();
     demoCheckFileInExeDir();
+    demoSystemType();
     
     std::cout << "====================================================" << std::endl;
     std::cout << "                 工具模块示例演示结束              " << std::endl;

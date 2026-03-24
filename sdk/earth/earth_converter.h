@@ -1,3 +1,9 @@
+/**
+ * @file earth_converter.h
+ * @brief 坐标系转换类
+ * @author yAlgo Team
+ * @date 2026-03-24
+ */
 #pragma once
 
 #include "earth_exports.h"

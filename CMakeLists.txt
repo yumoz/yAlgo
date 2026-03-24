@@ -17,6 +17,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# 添加UTF-8编码支持
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 # yUtils 项目不依赖Qt，使用纯C++实现
 
 # 根据操作系统和构建类型设置输出目录
@@ -26,27 +31,49 @@ if(WIN32)
 elseif(APPLE)
     set(OS_NAME "macos")
 elseif(UNIX)
-    set(OS_NAME "linux")
+    # 检查是否为麒麟系统
+    if(DEFINED ENV{KYLIN_VERSION})
+        # 检查架构
+        if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+            set(OS_NAME "kylin_arm")
+        else()
+            set(OS_NAME "kylin_x86")
+        endif()
+    # 检查是否为 Ubuntu
+    elseif(EXISTS "/etc/lsb-release")
+        file(READ "/etc/lsb-release" LSB_RELEASE_CONTENT)
+        if(LSB_RELEASE_CONTENT MATCHES "Ubuntu")
+            set(OS_NAME "ubuntu")
+        else()
+            set(OS_NAME "linux")
+        endif()
+    else()
+        set(OS_NAME "linux")
+    endif()
 endif()
-
-# 获取构建类型，如果没有设置默认使用Release
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "构建类型" FORCE)
-endif()
-string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE_LOWER)
 
 # 设置输出目录 - 按照操作系统和构建类型区分
-set(OUTPUT_BIN_DIR "${CMAKE_SOURCE_DIR}/bin/${OS_NAME}/${BUILD_TYPE_LOWER}")
-set(OUTPUT_LIB_DIR "${CMAKE_SOURCE_DIR}/lib/${OS_NAME}/${BUILD_TYPE_LOWER}")
+set(OUTPUT_BIN_DIR_DEBUG "${CMAKE_SOURCE_DIR}/bin/${OS_NAME}/debug")
+set(OUTPUT_LIB_DIR_DEBUG "${CMAKE_SOURCE_DIR}/lib/${OS_NAME}/debug")
+set(OUTPUT_BIN_DIR_RELEASE "${CMAKE_SOURCE_DIR}/bin/${OS_NAME}/release")
+set(OUTPUT_LIB_DIR_RELEASE "${CMAKE_SOURCE_DIR}/lib/${OS_NAME}/release")
 
 # 确保输出目录存在
-file(MAKE_DIRECTORY ${OUTPUT_BIN_DIR})
-file(MAKE_DIRECTORY ${OUTPUT_LIB_DIR})
+file(MAKE_DIRECTORY ${OUTPUT_BIN_DIR_DEBUG})
+file(MAKE_DIRECTORY ${OUTPUT_LIB_DIR_DEBUG})
+file(MAKE_DIRECTORY ${OUTPUT_BIN_DIR_RELEASE})
+file(MAKE_DIRECTORY ${OUTPUT_LIB_DIR_RELEASE})
 
-# 设置输出目录
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_LIB_DIR}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_LIB_DIR}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_BIN_DIR}")
+# 设置输出目录（使用配置特定的变量，避免 MSVC 自动添加额外的子目录）
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${OUTPUT_LIB_DIR_DEBUG}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${OUTPUT_LIB_DIR_RELEASE}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${OUTPUT_LIB_DIR_DEBUG}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${OUTPUT_LIB_DIR_RELEASE}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${OUTPUT_BIN_DIR_DEBUG}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${OUTPUT_BIN_DIR_RELEASE}")
+
+# 为 debug 版本添加 "d" 后缀
+set(CMAKE_DEBUG_POSTFIX "d")
 
 # 包含头文件搜索路径
 include_directories(${CMAKE_SOURCE_DIR}/sdk)
