@@ -37,13 +37,11 @@ bool test_logAndUtilsIntegration() {
  */
 bool test_mathAndEarthIntegration() {
     // 创建地球点
-    yalgo::earth::EarthPoint point(116.4, 39.9, 0.0);
+    yalgo::earth::EarthPoint point1(116.4, 39.9, 0.0);
+    yalgo::earth::EarthPoint point2(117.4, 39.9, 0.0);
     
-    // 使用数学工具计算坐标差
-    double distance = yalgo::math::straightLineDistance(
-        yalgo::earth::EarthPoint(0, 0, 0),
-        yalgo::earth::EarthPoint(1, 0, 0)
-    );
+    // 使用地球坐标模块计算距离
+    double distance = point1.distanceTo(point2);
     
     if (distance <= 0) {
         std::cerr << "Math and earth integration failed" << std::endl;

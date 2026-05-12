@@ -59,7 +59,7 @@ if(WIN32)
     target_sources(${EXAMPLE_NAME} PRIVATE "${CMAKE_BINARY_DIR}/resources/${EXAMPLE_NAME}_version.rc")
     
     # 复制logo.png到构建目录，以便资源编译器能找到它
-    file(COPY "${CMAKE_SOURCE_DIR}/resources/logo.ico" DESTINATION "${CMAKE_BINARY_DIR}/resources/")
+    file(COPY "${CMAKE_SOURCE_DIR}/resources/logo.png" DESTINATION "${CMAKE_BINARY_DIR}/resources/")
 endif()
 
 # 调用应用程序安装函数

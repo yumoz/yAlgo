@@ -2,7 +2,8 @@
 bin/
 install/
 lib/
-resources/
+# resources/ 目录需要提交到版本控制，包含 logo 等资源文件
+# resources/
 3rd/
 Testing/
 dist

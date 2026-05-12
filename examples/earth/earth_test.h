@@ -5,6 +5,11 @@
 #include "../../sdk/earth/earth_geometry.h"
 #include <vector>
 #include <iostream>
+#include <clocale>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 namespace yalgo {
 namespace examples {

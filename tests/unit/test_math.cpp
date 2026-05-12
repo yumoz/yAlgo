@@ -5,6 +5,10 @@
  * @date 2026-03-24
  */
 
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
+#endif
+
 #include <iostream>
 #include <cmath>
 #include "math/math_utils.h"
