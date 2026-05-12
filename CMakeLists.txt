@@ -96,7 +96,6 @@ add_subdirectory(examples/log)
 add_subdirectory(examples/utils)
 add_subdirectory(examples/math)
 add_subdirectory(examples/earth)
-add_subdirectory(examples/opengl)
 
 # Enable and add tests directory
 enable_testing()
