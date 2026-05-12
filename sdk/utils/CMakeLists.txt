@@ -58,16 +58,28 @@ if(WIN32)
     # 为Windows DLL添加版本信息
     set_target_properties(${UTILS_SDK_NAME} PROPERTIES
         # DLL版本信息
-        VERSION "${YUTILS_UTILS_VERSION}"
+        VERSION "${UTILS_SDK_VERSION}"
         # 文件描述
         OUTPUT_NAME "${UTILS_SDK_NAME}"
         # 设置DLL资源编译器的定义
         DEFINE_SYMBOL "YALGO_UTILS_EXPORTS"
     )
     
+    # 设置通用版本资源文件变量
+    set(PROJECT_VERSION_MAJOR ${UTILS_SDK_VERSION_MAJOR})
+    set(PROJECT_VERSION_MINOR ${UTILS_SDK_VERSION_MINOR})
+    set(PROJECT_VERSION_PATCH ${UTILS_SDK_VERSION_PATCH})
+    set(PROJECT_VERSION ${UTILS_SDK_VERSION})
+    set(PROJECT_NAME ${UTILS_SDK_NAME})
+    set(PROJECT_DESCRIPTION "yAlgo Utils SDK Library")
+    set(PROJECT_COMPANY "yAlgo Project")
+    set(PROJECT_COPYRIGHT "Copyright (C) ${UTILS_SDK_BUILD_DATE}")
+    set(BUILD_DATE ${UTILS_SDK_BUILD_DATE})
+    set(BUILD_TIME ${UTILS_SDK_BUILD_TIME})
+    
     # 创建Windows版本资源文件的内容
     configure_file(
-        "${CMAKE_SOURCE_DIR}/cmake/templates/utils_sdk_version.rc.in"
+        "${CMAKE_SOURCE_DIR}/cmake/templates/version.rc.in"
         "${CMAKE_BINARY_DIR}/resources/${UTILS_SDK_NAME}_version.rc"
         @ONLY
     )
@@ -76,7 +88,7 @@ if(WIN32)
     target_sources(${UTILS_SDK_NAME} PRIVATE "${CMAKE_BINARY_DIR}/resources/${UTILS_SDK_NAME}_version.rc")
     
     # 复制logo.png到构建目录，以便资源编译器能找到它
-    file(COPY "${CMAKE_SOURCE_DIR}/cmake/templates/logo.png" DESTINATION "${CMAKE_BINARY_DIR}/resources/")
+    file(COPY "${CMAKE_SOURCE_DIR}/resources/logo.png" DESTINATION "${CMAKE_BINARY_DIR}/resources/")
 endif()
 
 # 添加编译定义

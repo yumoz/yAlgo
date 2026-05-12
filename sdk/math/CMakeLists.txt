@@ -66,9 +66,21 @@ if(WIN32)
         DEFINE_SYMBOL "YALGO_MATH_EXPORTS"
     )
     
+    # 设置通用版本资源文件变量
+    set(PROJECT_VERSION_MAJOR ${MATH_SDK_VERSION_MAJOR})
+    set(PROJECT_VERSION_MINOR ${MATH_SDK_VERSION_MINOR})
+    set(PROJECT_VERSION_PATCH ${MATH_SDK_VERSION_PATCH})
+    set(PROJECT_VERSION ${MATH_SDK_VERSION})
+    set(PROJECT_NAME ${MATH_SDK_NAME})
+    set(PROJECT_DESCRIPTION "yAlgo Math SDK Library")
+    set(PROJECT_COMPANY "yAlgo Project")
+    set(PROJECT_COPYRIGHT "Copyright (C) ${MATH_SDK_BUILD_DATE}")
+    set(BUILD_DATE ${MATH_SDK_BUILD_DATE})
+    set(BUILD_TIME ${MATH_SDK_BUILD_TIME})
+    
     # 创建Windows版本资源文件的内容
     configure_file(
-        "${CMAKE_SOURCE_DIR}/cmake/templates/math_sdk_version.rc.in"
+        "${CMAKE_SOURCE_DIR}/cmake/templates/version.rc.in"
         "${CMAKE_BINARY_DIR}/resources/${MATH_SDK_NAME}_version.rc"
         @ONLY
     )
@@ -77,7 +89,7 @@ if(WIN32)
     target_sources(${MATH_SDK_NAME} PRIVATE "${CMAKE_BINARY_DIR}/resources/${MATH_SDK_NAME}_version.rc")
     
     # 复制logo.png到构建目录，以便资源编译器能找到它
-    file(COPY "${CMAKE_SOURCE_DIR}/cmake/templates/logo.png" DESTINATION "${CMAKE_BINARY_DIR}/resources/")
+    file(COPY "${CMAKE_SOURCE_DIR}/resources/logo.png" DESTINATION "${CMAKE_BINARY_DIR}/resources/")
 endif()
 
 # 添加编译定义

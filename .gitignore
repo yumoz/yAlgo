@@ -4,3 +4,5 @@ install/
 lib/
 resources/
 3rd/
+Testing/
+dist

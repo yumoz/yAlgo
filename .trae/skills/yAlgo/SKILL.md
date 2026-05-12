@@ -18,6 +18,7 @@ yAlgo 是一个 C++ 算法库，包含以下模块：
 ```
 yAlgo/
 ├── CMakeLists.txt        # 主 CMake 配置文件
+├── CMakePresets.json     # CMake 预设配置
 ├── sdk/                  # SDK 目录
 │   ├── log/             # 日志模块
 │   ├── utils/           # 工具模块
@@ -28,6 +29,14 @@ yAlgo/
 │   ├── utils/           # 工具模块示例
 │   ├── math/            # 数学模块示例
 │   └── earth/           # 地球坐标模块示例
+├── tests/               # 测试套件
+│   ├── unit/            # 单元测试
+│   │   ├── test_log.cpp
+│   │   ├── test_utils.cpp
+│   │   ├── test_math.cpp
+│   │   └── test_earth.cpp
+│   └── integration/     # 集成测试
+│       └── test_integration.cpp
 ├── build/               # 构建目录
 ├── bin/                 # 可执行文件输出目录
 └── lib/                 # 库文件输出目录
@@ -41,7 +50,23 @@ yAlgo/
 3. **编译 Release 版本**：`cmake --build . --config Release`
 4. **编译 Debug 版本**：`cmake --build . --config Debug`
 
+### 运行测试
+```bash
+# 运行所有测试
+ctest
+
+# 详细输出
+ctest -V
+
+# 运行单元测试
+ctest -R unit
+
+# 运行集成测试
+ctest -R integration
+```
+
 ### 编译结果
+
 - **Windows 系统**：
   - Release 版本：`bin/windows/release/` 和 `lib/windows/release/`
   - Debug 版本：`bin/windows/debug/` 和 `lib/windows/debug/`（带有 "d" 后缀，如 `yalgo_earthd.lib`）

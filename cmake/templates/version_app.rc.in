@@ -1,11 +1,11 @@
-// Windows 版本资源文件模板 - 通用 SDK 库版本信息
+// Windows 版本资源文件模板 - 通用应用程序版本信息
 // 使用方法: 在 CMake 中配置以下变量后包含此模板
 //   PROJECT_VERSION_MAJOR - 主版本号
 //   PROJECT_VERSION_MINOR - 次版本号
 //   PROJECT_VERSION_PATCH - 补丁版本号
 //   PROJECT_VERSION       - 完整版本字符串 (如 "1.0.0")
-//   PROJECT_NAME          - 项目名称 (如 "yalgo_utils")
-//   PROJECT_DESCRIPTION   - 项目描述 (如 "yAlgo Utils SDK Library")
+//   PROJECT_NAME          - 项目名称 (如 "utils_example")
+//   PROJECT_DESCRIPTION   - 项目描述 (如 "yAlgo Utils Example Application")
 //   PROJECT_COMPANY       - 公司名称 (如 "yAlgo Project")
 //   PROJECT_COPYRIGHT     - 版权信息 (如 "Copyright (C) 2024")
 //   BUILD_DATE            - 构建日期 (如 "2024-01-15")
@@ -23,7 +23,7 @@ VS_VERSION_INFO VERSIONINFO
  FILEFLAGS 0x0L
 #endif
  FILEOS 0x40004L
- FILETYPE 0x2L  // VFT_DLL - 动态链接库
+ FILETYPE 0x1L  // VFT_APP - 应用程序
  FILESUBTYPE 0x0L
 BEGIN
     BLOCK "StringFileInfo"
@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileVersion", "@PROJECT_VERSION@"
             VALUE "InternalName", "@PROJECT_NAME@"
             VALUE "LegalCopyright", "@PROJECT_COPYRIGHT@"
-            VALUE "OriginalFilename", "@PROJECT_NAME@.dll"
+            VALUE "OriginalFilename", "@PROJECT_NAME@.exe"
             VALUE "ProductName", "yAlgo SDK"
             VALUE "ProductVersion", "@PROJECT_VERSION@"
             VALUE "BuildDate", "@BUILD_DATE@"
