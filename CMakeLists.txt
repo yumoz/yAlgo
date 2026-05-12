@@ -97,6 +97,9 @@ add_subdirectory(examples/utils)
 add_subdirectory(examples/math)
 add_subdirectory(examples/earth)
 
+# Enable and add tests directory
+enable_testing()
+add_subdirectory(tests)
 # 创建复制文件的自定义目标已不再需要，因为文件已直接生成在最终位置
 # 保留此目标但不执行任何操作，以保持向后兼容性
 add_custom_target(copy_binaries ALL
