@@ -1,237 +1,209 @@
-# yAlgo 项目
+# yAlgo
 
-## 项目简介
+![CI](https://github.com/your-org/yAlgo/actions/workflows/cmake-multi-platform.yml/badge.svg)
 
-yAlgo是一个C++工具库集合，提供了日志记录和通用工具函数，帮助开发者快速构建C++应用程序。
+C++17 工具库/SDK 集合，包含日志系统、数学工具、地球坐标转换和通用工具模块。
 
-## 主要功能模块
+## 模块
 
-### yalgo_log
-- 高性能日志记录库
-- 支持异步日志
-- 提供灵活的日志配置选项
+| 模块 | 库 | 说明 |
+|---|---|---|
+| **log** | `yalgo_log` | 高性能异步日志系统，支持控制台/文件/Syslog 三路输出、日志轮转、ANSI 颜色 |
+| **math** | `yalgo_math` | 数学工具：角度弧度转换、功率单位换算（W/kW/hp/dBW/dBm）、通用分贝计算 |
+| **utils** | `yalgo_utils` | 工具函数：可执行文件路径获取、系统类型检测 |
+| **earth** | `yalgo_earth` | 地球坐标：WGS84↔ECEF↔UTM↔墨卡托转换、多椭球体、多边形包含、通视判断 |
 
-### yalgo_utils
-- 实用工具函数库
-- 包含执行路径相关的实用工具
+## 快速开始
 
-### yalgo_math
-- 基础数学函数库
-- 支持角度/弧度互相转换
-- 支持传统功率单位转换（瓦特、千瓦、马力）
-- 支持分贝功率转换（dBW、dBm与瓦特之间的转换）
-- 支持线性值与分贝值之间的通用转换
+### 前提条件
+
+- CMake 3.10+（推荐 3.14+）
+- C++17 编译器（MSVC、GCC、Clang）
+- Ninja 或 Visual Studio 2022（可选，用于加速构建）
+
+### 使用 CMake Presets（推荐）
+
+```bash
+# Windows（Visual Studio 17 2022）
+cmake --preset windows-release
+cmake --build --preset windows-release
+
+# Linux（GCC）
+cmake --preset linux-release
+cmake --build --preset linux-release
+
+# macOS（Clang）
+cmake --preset macos-release
+cmake --build --preset macos-release
+```
+
+支持 Debug/Release 及 Kylin ARM/x86 预设，详见 `CMakePresets.json`。
+
+### 手动构建
+
+```bash
+# Debug
+cmake -B build -DCMAKE_BUILD_TYPE=Debug -G Ninja
+cmake --build build
+
+# Release
+cmake -B build -DCMAKE_BUILD_TYPE=Release -G Ninja
+cmake --build build
+```
+
+### 安装
+
+```bash
+cmake --install build    # 安装到 <project>/install/
+```
+
+## 运行测试
+
+```bash
+# 构建完成后
+ctest --build-config Release --test-dir build
+
+# 详细输出
+ctest -V --build-config Release --test-dir build
+```
+
+| 测试名 | 类型 | 说明 |
+|---|---|---|
+| `unit_log` | 单元测试 | 日志模块 |
+| `unit_utils` | 单元测试 | 工具模块 |
+| `unit_math` | 单元测试 | 数学模块 |
+| `unit_earth` | 单元测试 | 地球坐标模块 |
+| `integration_modules` | 集成测试 | 多模块联合测试 |
 
 ## 项目结构
 
 ```
 yAlgo/
-├── CMakeLists.txt        # 主构建配置文件
-├── cmake/                # 自定义CMake模块
-│   ├── YuLibInstall.cmake # 统一安装模块
-│   └── YuMakeApp.cmake   # 应用程序构建模块
-├── examples/             # 示例程序
-│   ├── log/              # 日志库示例
-│   ├── math/             # 数学库示例
-│   └── utils/            # 工具库示例
-├── resources/            # 资源文件
-├── sdk/                  # SDK源代码
-│   ├── log/              # 日志模块
-│   ├── math/             # 数学模块
-│   └── utils/            # 工具模块
-├── bin/                  # 编译输出的可执行文件和动态库
-│   └── windows/          # Windows平台输出
-│       ├── debug/        # Debug版本输出
-│       └── release/      # Release版本输出
-├── lib/                  # 编译输出的静态库文件
-│   └── windows/          # Windows平台库文件
-│       ├── debug/        # Debug版本库文件
-│       └── release/      # Release版本库文件
-└── install/              # 安装目录（cmake --install生成）
+├── CMakeLists.txt          # 主构建配置
+├── CMakePresets.json       # 跨平台预设
+├── .github/workflows/      # CI/CD（MSVC、GCC、Clang）
+├── sdk/                    # SDK 源码
+│   ├── log/               # yalgo_log（SHARED）
+│   ├── math/              # yalgo_math（SHARED）
+│   ├── utils/             # yalgo_utils（SHARED）
+│   └── earth/             # yalgo_earth（SHARED）
+├── examples/               # 示例程序
+│   ├── log/               # log_example
+│   ├── math/              # math_example
+│   ├── utils/             # utils_example
+│   └── earth/             # earth_example
+├── tests/                  # 测试套件
+│   ├── unit/              # 单元测试
+│   └── integration/       # 集成测试
+├── cmake/                  # 自定义 CMake 模块
+├── bin/                    # 编译输出（exe/dll）
+├── lib/                    # 编译输出（静态导入库）
+└── install/                # 安装目录
 ```
 
-## 构建和安装
+### 输出目录
 
-### 前提条件
-- CMake 3.14+
-- 支持C++17的编译器
-- 建议使用Ninja生成器以获得更快的构建速度
+构建产物按 `<bin|lib>/<os>/<build_type>/` 组织：
 
-### 构建步骤
+| 平台 | 路径 |
+|---|---|
+| Windows | `bin/windows/release/`、`lib/windows/release/` |
+| Ubuntu | `bin/ubuntu/release/`、`lib/ubuntu/release/` |
+| Linux | `bin/linux/release/`、`lib/linux/release/` |
+| macOS | `bin/macos/release/`、`lib/macos/release/` |
+| Kylin ARM | `bin/kylin_arm/release/`、`lib/kylin_arm/release/` |
+| Kylin x86 | `bin/kylin_x86/release/`、`lib/kylin_x86/release/` |
 
-#### Debug版本构建
-
-1. 创建构建目录并进入
-```bash
-mkdir build
-cd build
-```
-
-2. 配置Debug版本
-```bash
-cmake -DCMAKE_BUILD_TYPE=Debug .. -G Ninja  # 或使用其他生成器如 "Visual Studio 17 2022"
-```
-
-3. 编译Debug版本
-```bash
-cmake --build .
-```
-
-#### Release版本构建
-
-1. 清理现有构建（可选，如果已经有build目录）
-```bash
-# 方法1：使用clean-all目标清理所有输出文件
-cmake --build . --target clean-all
-
-# 方法2：手动删除构建目录和输出目录
-rm -rf ../bin ../lib ../install
-cd ..
-rm -rf build
-```
-
-2. 重新创建构建目录并进入
-```bash
-mkdir build
-cd build
-```
-
-3. 配置Release版本
-```bash
-cmake -DCMAKE_BUILD_TYPE=Release .. -G Ninja  # 或使用其他生成器如 "Visual Studio 17 2022"
-```
-
-4. 编译Release版本
-```bash
-cmake --build .
-```
-
-#### 安装项目
-
-无论是Debug还是Release版本，都可以使用以下命令安装：
-
-```bash
-cmake --install .
-```
-
-cd build-win-x64-release; cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
-
-### 输出目录结构
-
-构建完成后，输出文件将按照以下结构组织：
-
-#### Debug版本
-- **可执行文件和动态库**：`bin/windows/debug/`
-  - libyalgo_log.dll (日志库)
-  - libyalgo_math.dll (数学库)
-  - libyalgo_utils.dll (工具库)
-  - log_example.exe (日志测试示例)
-  - math_example.exe (数学测试示例)
-  - utils_example.exe (工具测试示例)
-
-- **静态库文件**：`lib/windows/debug/`
-  - libyalgo_log.dll.a
-  - libyalgo_math.dll.a
-  - libyalgo_utils.dll.a
-
-#### Release版本
-- **可执行文件和动态库**：`bin/windows/release/`
-  - libyalgo_log.dll (日志库)
-  - libyalgo_math.dll (数学库)
-  - libyalgo_utils.dll (工具库)
-  - log_example.exe (日志测试示例)
-  - math_example.exe (数学测试示例)
-  - utils_example.exe (工具测试示例)
-
-- **静态库文件**：`lib/windows/release/`
-  - libyalgo_log.dll.a
-  - libyalgo_math.dll.a
-  - libyalgo_utils.dll.a
-
-#### 安装目录结构
-
-安装后，文件将被安装到项目根目录下的`install`文件夹：
-- `install/bin/` - 可执行文件和动态库
-- `install/lib/` - 静态库文件
-- `install/include/yAlgo/` - 头文件
-- `install/etc/` - 配置文件
+Debug 构建输出到 `<os>/debug/`，库文件名附加 `d` 后缀（如 `yalgo_logd.dll`）。
 
 ## 使用示例
 
-### 日志库使用示例
-可以参考 `examples/log` 目录下的示例程序，展示了如何使用yalgo_log库进行日志记录。
+### 日志模块
 
-### 数学库使用示例
-可以参考 `examples/math` 目录下的示例程序，展示了如何使用yalgo_math库进行角度/弧度转换和功率单位转换。
-
-#### 角度/弧度转换
 ```cpp
-#include "yalgo/math/math_utils.h"
+#include "log/async_logger.h"
 
-// 角度转弧度
-double radians = degreesToRadians(90.0);  // 返回 π/2
+yalgo::log::LogConfig config;
+config.runtime_level = yalgo::log::LogLevel::INFO;
+config.enable_console = true;
+config.enable_file = true;
+config.log_file = "app.log";
+yalgo::log::AsyncLogger::getInstance().init(config);
 
-// 弧度转角度
-double degrees = radiansToDegrees(M_PI);  // 返回 180.0
+YLOG_INFO("应用启动");
+YLOG_WARN("磁盘空间不足: %zu MB", free_space);
+YLOG_ERROR("连接失败: %s", err.what());
 ```
 
-#### 传统功率单位转换
+### 数学模块
+
 ```cpp
-// 瓦特转千瓦
-double kw = wattsToKilowatts(1000.0);  // 返回 1.0
+#include "math/math_utils.h"
 
-// 千瓦转瓦特
-double w = kilowattsToWatts(5.0);  // 返回 5000.0
-
-// 瓦特转马力
-double hp = wattsToHorsepower(735.5);  // 返回约 1.0
+double rad = yalgo::math::MathUtils::degreesToRadians(180.0);
+double kw  = yalgo::math::MathUtils::wattsToKilowatts(1000.0);
+double dbm = yalgo::math::MathUtils::wattsToDbm(1.0);  // 30.0
+double db  = yalgo::math::MathUtils::linearToDb(100.0); // 20.0
 ```
 
-#### 分贝功率转换
+### 工具模块
+
 ```cpp
-// 瓦特转dBW
-double dbw = wattsToDbW(10.0);  // 返回 10.0
+#include "utils/exec_path_utils.h"
 
-// dBW转瓦特
-double w = dbWToWatts(20.0);  // 返回 100.0
-
-// 瓦特转dBm
-double dbm = wattsToDbm(1.0);  // 返回 30.0
-
-// dBm转瓦特
-double w = dbmToWatts(0.0);  // 返回 0.001
-
-// dBW与dBm之间转换
-double dbm = dbWToDbm(0.0);  // 返回 30.0
-double dbw = dbmToDbW(30.0);  // 返回 0.0
+std::string exe  = yalgo::utils::ExecPathUtils::getExecutablePath();
+std::string dir  = yalgo::utils::ExecPathUtils::getExecutableDir();
+std::string cfg  = yalgo::utils::ExecPathUtils::getFileInExeDir("config.json");
+std::string sys  = yalgo::utils::ExecPathUtils::getSystemType(); // "windows" / "linux" / "macos"
 ```
 
-#### 通用线性值与dB值转换
+### 地球坐标模块
+
 ```cpp
-// 线性值转dB值（默认参考值为1.0）
-double db = linearToDb(100.0);  // 返回 20.0
+#include "earth/earth_point.h"
+#include "earth/earth_converter.h"
+#include "earth/earth_geometry.h"
 
-// dB值转线性值（默认参考值为1.0）
-double linear = dbToLinear(10.0);  // 返回 10.0
+// WGS84 ↔ UTM
+yalgo::earth::EarthPoint beijing(116.4, 39.9);
+yalgo::earth::EarthConverter conv;
+auto utm = conv.wgs84ToUTM(beijing);
+auto back = conv.utmToWGS84(utm);
 
-// 使用自定义参考值的转换
-double db = linearToDb(8.0, 2.0);  // 返回 6.0206（参考值为2.0）
-double linear = dbToLinear(6.0206, 2.0);  // 返回 8.0（参考值为2.0）
+// 墨卡托投影
+auto merc = conv.wgs84ToMercator(beijing);
+auto recovered = conv.mercatorToWGS84(merc);
+
+// 多边形包含判断
+yalgo::earth::EarthGeometry geo;
+std::vector<yalgo::earth::EarthPoint> polygon = { ... };
+bool inside = geo.isPointInPolygon(beijing, polygon, ProjectionType::UTM);
 ```
 
-### 工具库使用示例
-可以参考 `examples/utils` 目录下的示例程序，展示了如何使用yalgo_utils库进行工具函数调用。
+## 自定义 CMake 模块
 
-## 自定义CMake模块
+`cmake/` 目录提供可复用的 CMake 模块：
 
-### YuLibInstall.cmake
-统一的安装模块，提供了两个主要函数：
-- `yalgo_install_lib` - 用于安装库文件和头文件
-- `yalgo_install_app` - 用于安装应用程序和配置文件
+| 模块 | 说明 |
+|---|---|
+| `YuMakeSDK.cmake` | 构建 SHARED 库目标，自动收集源码、配置 C++17、设置输出目录 |
+| `YuMakeApp.cmake` | 构建可执行目标，配置链接和输出目录 |
+| `YuPath.cmake` | 路径工具函数（获取当前/父目录、规范化、相对路径） |
+| `YuLibInstall.cmake` | 统一安装函数：`yutils_install_lib()` 安装库+头文件，`yutils_install_app()` 安装可执行文件+配置文件 |
+| `yutils.cmake` | 主入口，聚合以上所有模块 |
 
-### YuMakeApp.cmake
-yAlgo应用程序构建脚本，用于创建可执行应用程序，提供统一的构建配置
+## CI/CD
+
+项目使用 GitHub Actions，配置见 `.github/workflows/cmake-multi-platform.yml`。
+
+| 运行环境 | 编译器 | 构建类型 |
+|---|---|---|
+| `windows-latest` | MSVC cl | Release |
+| `ubuntu-latest` | GCC g++ | Release |
+| `ubuntu-latest` | Clang clang++ | Release |
+
+流水线：Checkout → CMake Configure → Build → CTest。
 
 ## 许可证
 
-[在此添加许可证信息]
+MIT License
