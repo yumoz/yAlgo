@@ -24,7 +24,6 @@
 #include <winbase.h>
 #else
 #include <syslog.h>
-#include <usleep.h>
 #include <sys/stat.h>
 #endif
 
