@@ -175,6 +175,9 @@ EarthConverter::UTMCoordinate EarthConverter::wgs84ToUTM(const EarthPoint& point
     double sinLat = std::sin(latRad);
     double tanLat = std::tan(latRad);
     
+    // UTM缩放因子
+    double k0 = 0.9996;
+    
     // 计算UTM投影参数
     double N = m_params.semiMajorAxis / std::sqrt(1.0 - m_params.eccentricitySquared * sinLat * sinLat);
     double T = tanLat * tanLat;
@@ -185,9 +188,9 @@ EarthConverter::UTMCoordinate EarthConverter::wgs84ToUTM(const EarthPoint& point
                    + (15.0 * m_params.eccentricitySquared * m_params.eccentricitySquared / 256.0 + 45.0 * m_params.eccentricitySquared * m_params.eccentricitySquared * m_params.eccentricitySquared / 1024.0) * std::sin(4.0 * latRad)
                    - (35.0 * m_params.eccentricitySquared * m_params.eccentricitySquared * m_params.eccentricitySquared / 3072.0) * std::sin(6.0 * latRad));
     
-    // 计算东向和北向坐标
-    double easting = 500000.0 + N * (A + (1.0 - T + C) * A * A * A / 6.0 + (5.0 - 18.0 * T + T * T + 72.0 * C - 58.0 * m_params.secondEccentricitySquared) * A * A * A * A * A / 120.0);
-    double northing = M + N * tanLat * (A * A / 2.0 + (5.0 - T + 9.0 * C + 4.0 * C * C) * A * A * A * A / 24.0 + (61.0 - 58.0 * T + T * T + 600.0 * C - 330.0 * m_params.secondEccentricitySquared) * A * A * A * A * A * A / 720.0);
+    // 计算东向和北向坐标（UTM标准公式，含k0缩放因子）
+    double easting = 500000.0 + k0 * N * (A + (1.0 - T + C) * A * A * A / 6.0 + (5.0 - 18.0 * T + T * T + 72.0 * C - 58.0 * m_params.secondEccentricitySquared) * A * A * A * A * A / 120.0);
+    double northing = k0 * (M + N * tanLat * (A * A / 2.0 + (5.0 - T + 9.0 * C + 4.0 * C * C) * A * A * A * A / 24.0 + (61.0 - 58.0 * T + T * T + 600.0 * C - 330.0 * m_params.secondEccentricitySquared) * A * A * A * A * A * A / 720.0));
     
     // 南半球调整
     char hemisphere = 'N';
