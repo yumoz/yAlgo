@@ -103,7 +103,7 @@ add_subdirectory(tests)
 # 创建复制文件的自定义目标已不再需要，因为文件已直接生成在最终位置
 # 保留此目标但不执行任何操作，以保持向后兼容性
 add_custom_target(copy_binaries ALL
-    DEPENDS yalgo_log yalgo_utils yalgo_math yalgo_earth log_example utils_example math_example earth_example opengl_example
+    DEPENDS yalgo_log yalgo_utils yalgo_math yalgo_earth log_example utils_example math_example earth_example
     COMMENT "文件已直接生成在最终输出目录，无需复制"
 )
 
