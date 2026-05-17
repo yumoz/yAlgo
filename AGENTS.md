@@ -2,7 +2,7 @@
 
 ## Project
 
-C++17 CMake project, 4 **shared libraries** (`yalgo_log`, `yalgo_math`, `yalgo_utils`, `yalgo_earth`) under `sdk/`, a CLI tool `yalk` under `examples/cli/`, and a Python MCP server at `tools/mcp_server.py`.
+C++17 CMake project, 4 **shared libraries** (`yalgo_log`, `yalgo_math`, `yalgo_utils`, `yalgo_earth`) under `sdk/`, a CLI tool `yalk` under `app/cli/`, and a Python MCP server at `tools/mcp_server.py`.
 
 Namespaces: `yalgo::log`, `yalgo::math`, `yalgo::utils`, `yalgo::earth`.
 

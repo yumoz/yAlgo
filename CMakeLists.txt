@@ -96,7 +96,7 @@ add_subdirectory(examples/log)
 add_subdirectory(examples/utils)
 add_subdirectory(examples/math)
 add_subdirectory(examples/earth)
-add_subdirectory(examples/cli)
+add_subdirectory(app/cli)
 
 # Enable and add tests directory
 enable_testing()
