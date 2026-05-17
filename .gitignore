@@ -1,9 +1,113 @@
+# ============================
+# C/C++ Build Artifacts
+# ============================
 *build*
 bin/
 install/
 lib/
-# resources/ 目录需要提交到版本控制，包含 logo 等资源文件
-# resources/
-3rd/
 Testing/
 dist
+
+# ============================
+# IDE & Editor
+# ============================
+.vs/
+.vscode/
+*.user
+*.suo
+*.ncb
+*.sdf
+*.opensdf
+*.cache
+.idea/
+*.swp
+*.swo
+*~
+
+# ============================
+# Compiled Object files
+# ============================
+*.o
+*.obj
+*.lo
+*.la
+*.al
+*.libs
+*.so
+*.so.*
+*.dylib
+*.dll
+*.a
+*.lib
+*.exe
+*.out
+*.app
+
+# ============================
+# CMake
+# ============================
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# ============================
+# Python
+# ============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ============================
+# Resources (keep templates, ignore generated)
+# ============================
+# resources/ 目录需要提交到版本控制，包含 logo 等资源文件
+# resources/
+
+# ============================
+# Third-party (managed separately)
+# ============================
+3rd/
+
+# ============================
+# OS Files
+# ============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================
+# Logs
+# ============================
+*.log
+logs/
