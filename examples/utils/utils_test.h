@@ -2,7 +2,9 @@
 #define YALGO_EXAMPLES_UTILS_UTILS_TEST_H
 
 #include "../../sdk/utils/exec_path_utils.h"
+#include "../../sdk/utils/time_counter.h"
 #include <iostream>
+#include <thread>
 
 namespace yalgo {
 namespace examples {
@@ -37,6 +39,11 @@ public:
      * 演示获取系统类型
      */
     static void demoSystemType();
+
+    /**
+     * 演示高性能计时器
+     */
+    static void demoTimeCounter();
     
     /**
      * 运行所有测试

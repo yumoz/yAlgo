@@ -45,6 +45,7 @@ include(YuLibInstall)
 set(UTILS_HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/exec_path_utils.h
     ${CMAKE_CURRENT_SOURCE_DIR}/utils_exports.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/time_counter.h
 )
 
 # 调用安装函数

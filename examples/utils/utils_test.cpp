@@ -88,6 +88,35 @@ void UtilsTest::demoSystemType() {
     std::cout << "\n";
 }
 
+// 演示高性能计时器
+void UtilsTest::demoTimeCounter() {
+    std::cout << "=== 高性能计时器演示 ===" << std::endl;
+
+    yalgo::utils::TimeCounter tc;
+
+    // 模拟耗时操作
+    volatile double sum = 0.0;
+    for (int i = 0; i < 1000000; ++i) {
+        sum += i * 0.001;
+    }
+
+    std::cout << "  纳秒: " << tc.elapsedNano() << std::endl;
+    std::cout << "  微秒: " << tc.elapsedMicro() << std::endl;
+    std::cout << "  毫秒: " << tc.elapsedMilli() << std::endl;
+
+    // 测试 reset
+    tc.reset();
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::cout << "  sleep 50ms 后: " << tc.elapsedMilli() << " ms" << std::endl;
+
+    // 测试更大单位
+    tc.reset();
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "  sleep 1s 后: " << tc.elapsedSeconds() << " s" << std::endl;
+
+    std::cout << "\n";
+}
+
 // 运行所有测试
 void UtilsTest::runAllTests() {
     std::cout << "====================================================" << std::endl;
@@ -99,6 +128,7 @@ void UtilsTest::runAllTests() {
     demoFileInExeDir();
     demoCheckFileInExeDir();
     demoSystemType();
+    demoTimeCounter();
     
     std::cout << "====================================================" << std::endl;
     std::cout << "                 工具模块示例演示结束              " << std::endl;
