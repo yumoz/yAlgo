@@ -8,6 +8,9 @@ lib/
 Testing/
 dist
 
+# Claude Code
+.codegraph/
+
 # ============================
 # IDE & Editor
 # ============================
