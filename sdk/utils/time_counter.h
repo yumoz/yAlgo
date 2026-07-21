@@ -22,7 +22,7 @@ namespace utils {
  * 支持纳秒、微秒、毫秒、秒、分、时六种时间精度，
  * 适用于性能基准测试和耗时统计。
  */
-class YALGO_UTILS_API TimeCounter {
+class TimeCounter {
 public:
     TimeCounter() : begin_(std::chrono::high_resolution_clock::now()) {}
 
