@@ -4,6 +4,11 @@
 #include <vector>
 #ifdef _WIN32
 #include <windows.h>
+#elif defined(__APPLE__)
+#include <unistd.h>
+#include <limits.h>
+#include <sys/stat.h>
+#include <mach-o/dyld.h>
 #else
 #include <unistd.h>
 #include <limits.h>
