@@ -1,7 +1,7 @@
 #ifndef YALGO_EXAMPLES_UTILS_UTILS_TEST_H
 #define YALGO_EXAMPLES_UTILS_UTILS_TEST_H
 
-#include "../../sdk/utils/exec_path_utils.h"
+#include "../../sdk/utils/exe_path.h"
 #include "../../sdk/utils/time_counter.h"
 #include <iostream>
 #include <thread>

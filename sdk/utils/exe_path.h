@@ -1,11 +1,11 @@
 /**
- * @file exec_path_utils.h
+ * @file exe_path.h
  * @brief 跨平台可执行文件路径工具类
  * @author yAlgo Team
  * @date 2026-03-24
  */
-#ifndef YALGO_SDK_UTILS_EXEC_PATH_UTILS_H
-#define YALGO_SDK_UTILS_EXEC_PATH_UTILS_H
+#ifndef YALGO_SDK_UTILS_EXE_PATH_H
+#define YALGO_SDK_UTILS_EXE_PATH_H
 
 #include <string>
 #include <stdexcept>
@@ -15,12 +15,12 @@ namespace yalgo {
 namespace utils {
 
 /**
- * @class ExecPathUtils
+ * @class ExePath
  * @brief 跨平台可执行文件路径工具类
  * 
  * 兼容 C++11/C++14/C++17，不依赖 C++17 filesystem 库
  */
-class YALGO_UTILS_API ExecPathUtils {
+class YALGO_UTILS_API ExePath {
 public:
   /**
    * @brief 获取当前可执行文件的目录路径
@@ -82,25 +82,25 @@ private:
   /**
    * @brief 禁用构造函数（工具类无需实例化）
    */
-  ExecPathUtils() = delete;
+  ExePath() = delete;
   
   /**
    * @brief 禁用析构函数
    */
-  ~ExecPathUtils() = delete;
+  ~ExePath() = delete;
   
   /**
    * @brief 禁用拷贝构造函数
    */
-  ExecPathUtils(const ExecPathUtils&) = delete;
+  ExePath(const ExePath&) = delete;
   
   /**
    * @brief 禁用赋值运算符
    */
-  ExecPathUtils& operator=(const ExecPathUtils&) = delete;
+  ExePath& operator=(const ExePath&) = delete;
 };
 
 } // namespace utils
 } // namespace yalgo
 
-#endif // YALGO_SDK_UTILS_EXEC_PATH_UTILS_H
+#endif // YALGO_SDK_UTILS_EXE_PATH_H

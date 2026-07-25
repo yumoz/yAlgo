@@ -19,7 +19,11 @@ include_directories(${CMAKE_SOURCE_DIR}/sdk)
 
 # 收集源文件
 set(SOURCES
-    exec_path_utils.cpp
+    exe_path.cpp
+    file_utils.cpp
+    ini_parser.cpp
+    config_parser.cpp
+    json_utils.cpp
 )
 
 # 创建动态库
@@ -43,9 +47,14 @@ include(YuLibInstall)
 
 # 设置头文件列表
 set(UTILS_HEADER_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/exec_path_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/exe_path.h
     ${CMAKE_CURRENT_SOURCE_DIR}/utils_exports.h
     ${CMAKE_CURRENT_SOURCE_DIR}/time_counter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/string_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/file_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ini_parser.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/config_parser.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/json_utils.h
 )
 
 # 调用安装函数

@@ -1,4 +1,4 @@
-#include "exec_path_utils.h"
+#include "exe_path.h"
 #include <cstdlib>
 #include <cstring>
 #include <vector>
@@ -19,7 +19,7 @@ namespace yalgo {
 namespace utils {
 
 // 获取可执行文件完整路径（核心实现）
-std::string ExecPathUtils::getExecutablePath() {
+std::string ExePath::getExecutablePath() {
 #ifdef _WIN32
     std::vector<wchar_t> buffer(MAX_PATH + 1, 0);
     DWORD len = GetModuleFileNameW(NULL, buffer.data(), static_cast<DWORD>(buffer.size()));
@@ -72,7 +72,7 @@ std::string ExecPathUtils::getExecutablePath() {
 }
 
 // 获取可执行文件目录
-std::string ExecPathUtils::getExecutableDir() {
+std::string ExePath::getExecutableDir() {
     std::string exe_path = getExecutablePath();
     size_t sep_pos = exe_path.find_last_of(getPathSeparator());
     if (sep_pos == std::string::npos) {
@@ -82,7 +82,7 @@ std::string ExecPathUtils::getExecutableDir() {
 }
 
 // 路径拼接（跨平台）
-std::string ExecPathUtils::pathJoin(const std::string& dir, const std::string& filename) {
+std::string ExePath::pathJoin(const std::string& dir, const std::string& filename) {
     if (dir.empty()) return filename;
     if (filename.empty()) return dir;
 
@@ -105,7 +105,7 @@ std::string ExecPathUtils::pathJoin(const std::string& dir, const std::string& f
 }
 
 // 获取路径分隔符
-char ExecPathUtils::getPathSeparator() {
+char ExePath::getPathSeparator() {
 #ifdef _WIN32
     return '\\';
 #else
@@ -114,7 +114,7 @@ char ExecPathUtils::getPathSeparator() {
 }
 
 // 拼接可执行目录下的文件路径
-std::string ExecPathUtils::getFileInExeDir(const std::string& filename) {
+std::string ExePath::getFileInExeDir(const std::string& filename) {
     if (filename.empty()) {
         throw std::runtime_error("Filename cannot be empty");
     }
@@ -130,7 +130,7 @@ std::string ExecPathUtils::getFileInExeDir(const std::string& filename) {
 }
 
 // 检查文件是否存在
-bool ExecPathUtils::checkFileInExeDir(const std::string& filename) {
+bool ExePath::checkFileInExeDir(const std::string& filename) {
     try {
         std::string file_path = getFileInExeDir(filename);
 #ifdef _WIN32
@@ -148,8 +148,8 @@ bool ExecPathUtils::checkFileInExeDir(const std::string& filename) {
     }
 }
 
-// 规范化路径（新增函数）
-std::string ExecPathUtils::normalizePath(const std::string& path) {
+// 规范化路径
+std::string ExePath::normalizePath(const std::string& path) {
     // 简单实现：处理连续的分隔符
     std::string result;
     char sep = getPathSeparator();
@@ -162,12 +162,11 @@ std::string ExecPathUtils::normalizePath(const std::string& path) {
         result += path[i];
     }
     
-    // 可以扩展更复杂的路径规范化逻辑
     return result;
 }
 
 // 获取当前系统类型
-std::string ExecPathUtils::getSystemType() {
+std::string ExePath::getSystemType() {
 #ifdef _WIN32
     return "windows";
 #elif __APPLE__

@@ -149,12 +149,12 @@ double db  = yalgo::math::MathUtils::linearToDb(100.0); // 20.0
 ### 工具模块
 
 ```cpp
-#include "utils/exec_path_utils.h"
+#include "utils/exe_path.h"
 
-std::string exe  = yalgo::utils::ExecPathUtils::getExecutablePath();
-std::string dir  = yalgo::utils::ExecPathUtils::getExecutableDir();
-std::string cfg  = yalgo::utils::ExecPathUtils::getFileInExeDir("config.json");
-std::string sys  = yalgo::utils::ExecPathUtils::getSystemType(); // "windows" / "linux" / "macos"
+std::string exe  = yalgo::utils::ExePath::getExecutablePath();
+std::string dir  = yalgo::utils::ExePath::getExecutableDir();
+std::string cfg  = yalgo::utils::ExePath::getFileInExeDir("config.json");
+std::string sys  = yalgo::utils::ExePath::getSystemType(); // "windows" / "linux" / "macos"
 ```
 
 ### 地球坐标模块

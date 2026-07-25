@@ -1,6 +1,6 @@
 #include "utils_commands.h"
 #include "../../3rd/cli/json.hpp"
-#include "../../sdk/utils/exec_path_utils.h"
+#include "../../sdk/utils/exe_path.h"
 
 using namespace yalgo::utils;
 using json = nlohmann::json;
@@ -24,12 +24,12 @@ int executeUtilsCommand() {
     json output;
 
     if (execPathCmd->parsed()) {
-        output["executable_path"] = ExecPathUtils::getExecutablePath();
-        output["executable_dir"]  = ExecPathUtils::getExecutableDir();
+        output["executable_path"] = ExePath::getExecutablePath();
+        output["executable_dir"]  = ExePath::getExecutableDir();
     }
 
     if (sysTypeCmd->parsed()) {
-        output["system_type"] = ExecPathUtils::getSystemType();
+        output["system_type"] = ExePath::getSystemType();
     }
 
     if (!output.is_null()) {

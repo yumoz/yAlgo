@@ -8,7 +8,7 @@ void UtilsTest::demoExecutablePath() {
     std::cout << "=== 获取可执行文件完整路径演示 ===" << std::endl;
     
     try {
-        std::string exe_path = yalgo::utils::ExecPathUtils::getExecutablePath();
+        std::string exe_path = yalgo::utils::ExePath::getExecutablePath();
         std::cout << "可执行文件完整路径: " << exe_path << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "获取可执行文件路径失败: " << e.what() << std::endl;
@@ -22,7 +22,7 @@ void UtilsTest::demoExecutableDir() {
     std::cout << "=== 获取可执行文件目录演示 ===" << std::endl;
     
     try {
-        std::string exe_dir = yalgo::utils::ExecPathUtils::getExecutableDir();
+        std::string exe_dir = yalgo::utils::ExePath::getExecutableDir();
         std::cout << "可执行文件目录: " << exe_dir << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "获取可执行文件目录失败: " << e.what() << std::endl;
@@ -37,11 +37,11 @@ void UtilsTest::demoFileInExeDir() {
     
     try {
         // 测试拼接简单文件名
-        std::string config_path = yalgo::utils::ExecPathUtils::getFileInExeDir("config.json");
+        std::string config_path = yalgo::utils::ExePath::getFileInExeDir("config.json");
         std::cout << "配置文件路径: " << config_path << std::endl;
         
         // 测试拼接子目录下的文件
-        std::string log_path = yalgo::utils::ExecPathUtils::getFileInExeDir("logs/app.log");
+        std::string log_path = yalgo::utils::ExePath::getFileInExeDir("logs/app.log");
         std::cout << "日志文件路径: " << log_path << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "拼接文件路径失败: " << e.what() << std::endl;
@@ -55,11 +55,11 @@ void UtilsTest::demoCheckFileInExeDir() {
     std::cout << "=== 检查可执行文件目录下的文件是否存在演示 ===" << std::endl;
     
     // 检查当前可执行文件是否存在（应该存在）
-    bool exe_exists = yalgo::utils::ExecPathUtils::checkFileInExeDir("log_example.exe");
+    bool exe_exists = yalgo::utils::ExePath::checkFileInExeDir("log_example.exe");
     std::cout << "log_example.exe 存在: " << (exe_exists ? "是" : "否") << std::endl;
     
     // 检查一个不存在的文件（应该不存在）
-    bool non_exist = yalgo::utils::ExecPathUtils::checkFileInExeDir("non_existent_file.txt");
+    bool non_exist = yalgo::utils::ExePath::checkFileInExeDir("non_existent_file.txt");
     std::cout << "non_existent_file.txt 存在: " << (non_exist ? "是" : "否") << std::endl;
     
     std::cout << "\n";
@@ -70,7 +70,7 @@ void UtilsTest::demoSystemType() {
     std::cout << "=== 获取系统类型演示 ===" << std::endl;
     
     try {
-        std::string system_type = yalgo::utils::ExecPathUtils::getSystemType();
+        std::string system_type = yalgo::utils::ExePath::getSystemType();
         std::cout << "当前系统类型: " << system_type << std::endl;
         
         // 根据系统类型执行不同的命令

@@ -193,10 +193,10 @@ YLOG_DEBUG("这是一条调试日志");
 
 ### 工具模块示例
 ```cpp
-std::string exe_path = yalgo::utils::ExecPathUtils::getExecutablePath();
-std::string exe_dir = yalgo::utils::ExecPathUtils::getExecutableDir();
-std::string config_path = yalgo::utils::ExecPathUtils::getFileInExeDir("config.json");
-std::string system_type = yalgo::utils::ExecPathUtils::getSystemType();
+std::string exe_path = yalgo::utils::ExePath::getExecutablePath();
+std::string exe_dir = yalgo::utils::ExePath::getExecutableDir();
+std::string config_path = yalgo::utils::ExePath::getFileInExeDir("config.json");
+std::string system_type = yalgo::utils::ExePath::getSystemType();
 ```
 
 ### 地球坐标模块示例
