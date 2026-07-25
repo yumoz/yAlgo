@@ -24,6 +24,10 @@ set(SOURCES
     ini_parser.cpp
     config_parser.cpp
     json_utils.cpp
+    datetime_utils.cpp
+    base64.cpp
+    checksum.cpp
+    hex_dump.cpp
 )
 
 # 创建动态库
@@ -55,6 +59,13 @@ set(UTILS_HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/ini_parser.h
     ${CMAKE_CURRENT_SOURCE_DIR}/config_parser.h
     ${CMAKE_CURRENT_SOURCE_DIR}/json_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/datetime_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/retry_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/thread_queue.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/base64.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/checksum.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/hex_dump.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ring_buffer.h
 )
 
 # 调用安装函数
