@@ -13,6 +13,10 @@ include_directories(
 
 set(SOURCE_FILES
     main.cpp
+    cli_utils.cpp
+    earth_commands.cpp
+    math_commands.cpp
+    utils_commands.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
