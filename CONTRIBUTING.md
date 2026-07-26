@@ -46,3 +46,46 @@ cmake --build --preset windows-release
 # 测试
 ctest --build-config Release
 ```
+
+## RPC 模块开发
+
+### 依赖安装
+
+RPC 模块依赖 gRPC/Protobuf，有两种方式：
+
+1. **系统包安装**（推荐用于开发）：
+   ```bash
+   # macOS
+   brew install grpc protobuf
+   # Ubuntu
+   apt install libgrpc-dev libprotobuf-dev
+   ```
+
+2. **自动下载**：未安装系统包时，CMake 会通过 FetchContent 自动下载 gRPC 源码编译
+
+### 自定义查找路径
+
+```bash
+cmake -DGRPC_ROOT=/path/to/grpc -DPROTOBUF_ROOT=/path/to/protobuf ..
+```
+
+或设置环境变量：
+```bash
+export GRPC_ROOT=/path/to/grpc
+export PROTOBUF_ROOT=/path/to/protobuf
+```
+
+### Proto 文件编译
+
+在 `examples/rpc/` 目录下的 `.proto` 文件会通过 `FindYalgoGrpc` 提供的 `YALGO_PROTOC_EXECUTABLE` 和 `YALGO_GRPC_CPP_PLUGIN` 自动编译。
+
+### 测试 RPC 模块
+
+```bash
+# 运行 RPC 单元测试
+ctest -R unit_rpc --build-config Release
+
+# 运行 RPC 示例
+./bin/<os>/release/rpc_server [port]   # 终端1
+./bin/<os>/release/rpc_client [host:port]  # 终端2
+```

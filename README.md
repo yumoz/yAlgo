@@ -12,6 +12,7 @@ C++17 工具库/SDK 集合，包含日志系统、数学工具、地球坐标转
 | **math** | `yalgo_math` | 数学工具：角度弧度转换、功率单位换算（W/kW/hp/dBW/dBm）、通用分贝计算 |
 | **utils** | `yalgo_utils` | 工具函数：可执行文件路径获取、系统类型检测 |
 | **earth** | `yalgo_earth` | 地球坐标：WGS84↔ECEF↔UTM↔墨卡托转换、多椭球体、多边形包含、通视判断 |
+| **rpc** | `yalgo_rpc` | gRPC 通信封装：双向流式、客户端/服务端、拦截器、proto 编译工具 |
 
 ## 快速开始
 
@@ -20,6 +21,10 @@ C++17 工具库/SDK 集合，包含日志系统、数学工具、地球坐标转
 - CMake 3.10+（推荐 3.14+）
 - C++17 编译器（MSVC、GCC、Clang）
 - Ninja 或 Visual Studio 2022（可选，用于加速构建）
+- gRPC/Protobuf（rpc 模块需要，可选）
+  - macOS: `brew install grpc protobuf`
+  - Ubuntu: `apt install libgrpc-dev libprotobuf-dev`
+  - 或通过 FetchContent 自动下载（无需预装）
 
 ### 使用 CMake Presets（推荐）
 
@@ -73,6 +78,7 @@ ctest -V --build-config Release --test-dir build
 | `unit_utils` | 单元测试 | 工具模块 |
 | `unit_math` | 单元测试 | 数学模块 |
 | `unit_earth` | 单元测试 | 地球坐标模块 |
+| `unit_rpc` | 单元测试 | RPC 模块（gRPC） |
 | `integration_modules` | 集成测试 | 多模块联合测试 |
 
 ## 项目结构
@@ -86,12 +92,14 @@ yAlgo/
 │   ├── log/               # yalgo_log（SHARED）
 │   ├── math/              # yalgo_math（SHARED）
 │   ├── utils/             # yalgo_utils（SHARED）
-│   └── earth/             # yalgo_earth（SHARED）
+│   ├── earth/             # yalgo_earth（SHARED）
+│   └── rpc/               # yalgo_rpc（SHARED，gRPC 通信）
 ├── examples/               # 示例程序
 │   ├── log/               # log_example
 │   ├── math/              # math_example
 │   ├── utils/             # utils_example
-│   └── earth/             # earth_example
+│   ├── earth/             # earth_example
+│   └── rpc/               # rpc_example + rpc_server + rpc_client
 ├── tests/                  # 测试套件
 │   ├── unit/              # 单元测试
 │   └── integration/       # 集成测试
@@ -180,12 +188,31 @@ std::vector<yalgo::earth::EarthPoint> polygon = { ... };
 bool inside = geo.isPointInPolygon(beijing, polygon, ProjectionType::UTM);
 ```
 
+### RPC 模块
+
+```cpp
+#include "rpc/grpc_server.h"
+#include "rpc/grpc_client.h"
+
+// 服务端
+yalgo::rpc::GrpcServer server("0.0.0.0:50051");
+server.registerService(&myServiceImpl);
+server.startAsync();
+server.waitForShutdown();
+
+// 客户端
+yalgo::rpc::GrpcClient client("localhost:50051");
+client.waitForReady(5);
+auto stub = MyService::NewStub(client.getChannel());
+```
+
 ## 自定义 CMake 模块
 
 `cmake/` 目录提供可复用的 CMake 模块：
 
 | 模块 | 说明 |
 |---|---|
+| `FindYalgoGrpc.cmake` | 统一查找 gRPC/Protobuf 依赖（系统包优先，FetchContent 降级） |
 | `YuMakeSDK.cmake` | 构建 SHARED 库目标，自动收集源码、配置 C++17、设置输出目录 |
 | `YuMakeApp.cmake` | 构建可执行目标，配置链接和输出目录 |
 | `YuPath.cmake` | 路径工具函数（获取当前/父目录、规范化、相对路径） |

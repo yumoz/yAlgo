@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package echo;
+
+// 简单的Echo服务，用于演示gRPC双向流式通信
+service EchoService {
+    // 客户端发送消息，服务端返回相同消息（unary）
+    rpc Echo (EchoRequest) returns (EchoResponse);
+
+    // 客户端发送消息流，服务端返回每个消息的响应（client-streaming）
+    rpc ClientStream (stream EchoRequest) returns (EchoResponse);
+
+    // 服务端返回消息流（server-streaming）
+    rpc ServerStream (EchoRequest) returns (stream EchoResponse);
+
+    // 双向流式通信（bidi-streaming）
+    rpc BidiStream (stream EchoRequest) returns (stream EchoResponse);
+}
+
+message EchoRequest {
+    string message = 1;
+    int32 seq = 2;
+}
+
+message EchoResponse {
+    string message = 1;
+    int32 seq = 2;
+    string server_id = 3;
+}

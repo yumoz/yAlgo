@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.0 (2026-07-26)
+
+### 新增
+- RPC 模块 `yalgo_rpc`：gRPC 双向流式通信封装（GrpcServer、GrpcClient、LogInterceptor）
+- `FindYalgoGrpc.cmake`：统一 gRPC/Protobuf 依赖查找（系统包优先 + FetchContent 降级）
+- RPC 示例：独立服务端 (`rpc_server`) + 独立客户端 (`rpc_client`) + 集成测试 (`rpc_example`)
+- `unit_rpc` 单元测试：10 个测试用例覆盖 server/client 工具函数和完整通信
+
+### 变更
+- 依赖管理重构：gRPC/Protobuf 查找逻辑统一封装到 `cmake/FindYalgoGrpc.cmake`
+- 移除各 CMakeLists.txt 中重复的 `find_package(Protobuf/gRPC)` 和 macOS 头文件修复代码
+- 移除 protoc 路径硬编码，改用 `YALGO_PROTOC_EXECUTABLE` 变量
+
 ## 1.0.0 (2026-03-24)
 
 ### 新增

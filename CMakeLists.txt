@@ -92,10 +92,12 @@ add_subdirectory(sdk/log)
 add_subdirectory(sdk/utils)
 add_subdirectory(sdk/math)
 add_subdirectory(sdk/earth)
+add_subdirectory(sdk/rpc)
 add_subdirectory(examples/log)
 add_subdirectory(examples/utils)
 add_subdirectory(examples/math)
 add_subdirectory(examples/earth)
+add_subdirectory(examples/rpc)
 add_subdirectory(app/cli)
 
 # Enable and add tests directory
@@ -104,7 +106,7 @@ add_subdirectory(tests)
 # 创建复制文件的自定义目标已不再需要，因为文件已直接生成在最终位置
 # 保留此目标但不执行任何操作，以保持向后兼容性
 add_custom_target(copy_binaries ALL
-    DEPENDS yalgo_log yalgo_utils yalgo_math yalgo_earth log_example utils_example math_example earth_example yalk
+    DEPENDS yalgo_log yalgo_utils yalgo_math yalgo_earth yalgo_rpc log_example utils_example math_example earth_example rpc_example rpc_server rpc_client yalk
     COMMENT "文件已直接生成在最终输出目录，无需复制"
 )
 

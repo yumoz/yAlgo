@@ -14,6 +14,7 @@ include_directories(${CMAKE_SOURCE_DIR}/../sdk/log)
 include_directories(${CMAKE_SOURCE_DIR}/../sdk/utils)
 include_directories(${CMAKE_SOURCE_DIR}/../sdk/math)
 include_directories(${CMAKE_SOURCE_DIR}/../sdk/earth)
+include_directories(${CMAKE_SOURCE_DIR}/../sdk/rpc)
 
 # 添加子目录
 add_subdirectory(unit)
