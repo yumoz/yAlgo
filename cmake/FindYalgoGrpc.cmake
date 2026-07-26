@@ -75,16 +75,17 @@ if(Protobuf_FOUND AND gRPC_FOUND)
     message(STATUS "Found system gRPC: ${gRPC_VERSION}")
     set(YALGO_GRPC_TARGETS gRPC::grpc++ protobuf::libprotobuf)
 
-    # 查找与库版本匹配的 protoc（避免 PATH 中旧版本干扰）
-    # 直接检查已知的正确路径，避免 find_program 被 PATH 中旧版本干扰
+    # 查找与库版本匹配的 protoc（跨平台，避免 PATH 中旧版本干扰）
     set(_YALGO_PROTOC "")
     foreach(_PROTOC_SEARCH_PATH
         "$ENV{PROTOBUF_ROOT}/bin/protoc"
         "${PROTOBUF_ROOT}/bin/protoc"
-        "/opt/homebrew/opt/protobuf/bin/protoc"
-        "/opt/homebrew/bin/protoc"
-        "/usr/local/bin/protoc"
-        "/usr/bin/protoc"
+        "$ENV{PROTOBUF_ROOT}/bin/protoc.exe"        # Windows
+        "${PROTOBUF_ROOT}/bin/protoc.exe"            # Windows
+        "/opt/homebrew/opt/protobuf/bin/protoc"      # macOS Homebrew
+        "/opt/homebrew/bin/protoc"                   # macOS
+        "/usr/local/bin/protoc"                      # Linux
+        "/usr/bin/protoc"                            # Linux
     )
         if(EXISTS "${_PROTOC_SEARCH_PATH}" AND NOT _YALGO_PROTOC)
             set(_YALGO_PROTOC "${_PROTOC_SEARCH_PATH}")
@@ -100,19 +101,27 @@ if(Protobuf_FOUND AND gRPC_FOUND)
         set(YALGO_PROTOC_EXECUTABLE "${Protobuf_PROTOC_EXECUTABLE}")
     endif()
 
-    # 查找 grpc_cpp_plugin
-    find_program(_YALGO_GRPC_CPP_PLUGIN grpc_cpp_plugin
-        HINTS
-            "$ENV{GRPC_ROOT}/bin"
-            "${GRPC_ROOT}/bin"
-        PATHS
-            /opt/homebrew/opt/grpc/bin
-            /opt/homebrew/bin
-            /usr/local/bin
-            /usr/bin
+    # 查找 grpc_cpp_plugin（跨平台）
+    set(_YALGO_GRPC_PLUGIN "")
+    foreach(_GRPC_PLUGIN_SEARCH_PATH
+        "$ENV{GRPC_ROOT}/bin/grpc_cpp_plugin"
+        "${GRPC_ROOT}/bin/grpc_cpp_plugin"
+        "$ENV{GRPC_ROOT}/bin/grpc_cpp_plugin.exe"   # Windows
+        "${GRPC_ROOT}/bin/grpc_cpp_plugin.exe"       # Windows
+        "/opt/homebrew/opt/grpc/bin/grpc_cpp_plugin" # macOS Homebrew
+        "/opt/homebrew/bin/grpc_cpp_plugin"          # macOS
+        "/usr/local/bin/grpc_cpp_plugin"             # Linux
+        "/usr/bin/grpc_cpp_plugin"                   # Linux
     )
-    if(_YALGO_GRPC_CPP_PLUGIN)
-        set(YALGO_GRPC_CPP_PLUGIN "${_YALGO_GRPC_CPP_PLUGIN}")
+        if(EXISTS "${_GRPC_PLUGIN_SEARCH_PATH}" AND NOT _YALGO_GRPC_PLUGIN)
+            set(_YALGO_GRPC_PLUGIN "${_GRPC_PLUGIN_SEARCH_PATH}")
+        endif()
+    endforeach()
+    if(NOT _YALGO_GRPC_PLUGIN)
+        find_program(_YALGO_GRPC_PLUGIN grpc_cpp_plugin)
+    endif()
+    if(_YALGO_GRPC_PLUGIN)
+        set(YALGO_GRPC_CPP_PLUGIN "${_YALGO_GRPC_PLUGIN}")
     else()
         message(WARNING "grpc_cpp_plugin not found, proto gRPC code generation may fail")
     endif()
@@ -167,6 +176,7 @@ if(NOT YALGO_GRPC_FOUND)
     set(protobuf_BUILD_TESTS "${protobuf_BUILD_TESTS_SAVED}" CACHE BOOL "" FORCE)
 
     set(YALGO_GRPC_TARGETS grpc++ protobuf::libprotobuf)
+    # generator expressions 在 add_custom_command 的 COMMAND 中有效
     set(YALGO_PROTOC_EXECUTABLE "$<TARGET_FILE:protoc>")
     set(YALGO_GRPC_CPP_PLUGIN "$<TARGET_FILE:grpc_cpp_plugin>")
     set(YALGO_GRPC_FOUND TRUE)
@@ -186,8 +196,10 @@ else()
     message(FATAL_ERROR
         "Could not find gRPC/Protobuf.\n"
         "Options:\n"
-        "  1. Install via package manager: brew install grpc protobuf (macOS)\n"
-        "                               apt install libgrpc-dev libprotobuf-dev (Ubuntu)\n"
+        "  1. Install via package manager:\n"
+        "     macOS:  brew install grpc protobuf\n"
+        "     Ubuntu: apt install libgrpc-dev libprotobuf-dev protobuf-compiler-grpc\n"
+        "     Windows: vcpkg install grpc protobuf\n"
         "  2. Set CMake variables: -DGRPC_ROOT=/path/to/grpc -DPROTOBUF_ROOT=/path/to/protobuf\n"
         "  3. Set environment variables: export GRPC_ROOT=/path/to/grpc\n"
     )

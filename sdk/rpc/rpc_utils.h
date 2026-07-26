@@ -103,10 +103,3 @@ public:
 } // namespace rpc
 } // namespace yalgo
 
-// Proto编译辅助宏（供用户在自己的CMakeLists.txt中使用）
-// 使用方法：
-//   rpc_generate_proto(my_service.proto)
-//   target_link_libraries(my_target PRIVATE yalgo_rpc)
-#define rpc_generate_proto(proto_file) \
-    protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${proto_file}) \
-    gRPC_generate_cpp(GRPC_SRCS GRPC_HDRS ${proto_file})

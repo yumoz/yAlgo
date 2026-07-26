@@ -58,7 +58,7 @@ add_executable(test_rpc test_rpc.cpp
     ${RPC_TEST_PROTO_SRCS} ${RPC_TEST_PROTO_HDRS}
     ${RPC_TEST_GRPC_SRCS} ${RPC_TEST_GRPC_HDRS}
 )
-target_include_directories(test_rpc PRIVATE ${RPC_TEST_PROTO_DIR} ${CMAKE_SOURCE_DIR}/../examples/rpc)
+target_include_directories(test_rpc PRIVATE ${RPC_TEST_PROTO_DIR} ${CMAKE_SOURCE_DIR}/examples/rpc)
 target_link_libraries(test_rpc PRIVATE yalgo_rpc yalgo_log ${YALGO_GRPC_TARGETS})
 add_test(NAME unit_rpc COMMAND test_rpc)
 

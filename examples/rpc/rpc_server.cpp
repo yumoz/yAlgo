@@ -42,7 +42,9 @@ int main(int argc, char* argv[]) {
 
     // 注册信号处理
     signal(SIGINT, signalHandler);
+#ifdef SIGTERM
     signal(SIGTERM, signalHandler);
+#endif
 
     // 创建并启动服务器
     EchoServiceImpl service;

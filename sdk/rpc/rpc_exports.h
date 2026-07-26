@@ -6,6 +6,8 @@
   #else
     #define RPC_API __declspec(dllimport)
   #endif
+#elif defined(__GNUC__) && __GNUC__ >= 4
+  #define RPC_API __attribute__((visibility("default")))
 #else
   #define RPC_API
 #endif
