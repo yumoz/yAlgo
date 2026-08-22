@@ -44,6 +44,41 @@ cmake --build --preset macos-release
 
 支持 Debug/Release 及 Kylin ARM/x86 预设，详见 `CMakePresets.json`。
 
+### 一键编译脚本（推荐，Windows）
+
+项目根目录提供 `build.ps1`（PowerShell）与 `build.bat`（cmd）两个等价脚本，封装了上面的 `cmake --preset` + `cmake --build --preset` 流程，并支持指定环境：
+
+```bash
+# PowerShell
+.\build.ps1                       # 默认 windows-debug
+.\build.ps1 -Config release       # windows-release
+.\build.ps1 -Platform linux       # linux-debug
+.\build.ps1 -Platform kylin -Arch x86 -Config release  # kylin-x86-release
+.\build.ps1 -Config debug -Clean
+
+# cmd（参数顺序：Platform Arch Config -Clean）
+build.bat                         # 默认 windows-debug
+build.bat windows "" release      # windows-release
+build.bat kylin x86 release       # kylin-x86-release
+build.bat debug -Clean
+
+# 查看帮助
+.\build.ps1 -Help
+build.bat -Help
+
+# 只编译不跑测试
+.\build.ps1 -NoTest
+build.bat debug -NoTest
+
+# 并行编译 + 编译后安装
+.\build.ps1 -Jobs 8 -Install
+build.bat windows "" release -Jobs 8 -Install
+```
+
+编译成功后脚本会自动跑 CTest（仅当目标平台与宿主机 OS 一致；如 Windows 上编 linux 预设会跳过测试）。完整说明见 [doc/build_script_guide.md](doc/build_script_guide.md)。
+
+完整说明见 [doc/build_script_guide.md](doc/build_script_guide.md)。
+
 ### 手动构建
 
 ```bash

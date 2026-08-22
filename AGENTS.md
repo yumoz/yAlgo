@@ -18,6 +18,19 @@ cmake --build --preset windows-debug
 # Presets also exist for linux-release/debug, macos-release/debug, kylin-arm-release/debug
 ```
 
+One-click wrappers (Windows only): `build.ps1` (PowerShell) and `build.bat` (cmd) at repo root. Both default to `windows-debug` and accept `-Platform` (windows/linux/macos/kylin), `-Arch` (arm/x86, kylin only), `-Config` (debug/release), `-Clean`:
+
+```bash
+.\build.ps1                              # windows-debug
+.\build.ps1 -Config release              # windows-release
+.\build.ps1 -Platform linux              # linux-debug
+.\build.ps1 -Platform kylin -Arch x86 -Config release  # kylin-x86-release
+.\build.ps1 -Help                        # print usage
+build.bat kylin x86 release              # kylin-x86-release (cmd, positional args)
+```
+
+After a successful build, CTest runs automatically **only when the target platform matches the host OS** (skipped on Windows when targeting linux/macos/kylin). Pass `-NoTest` to skip it, `-Jobs N` for parallel build, `-Install` to run `cmake --install`. Full guide: `doc/build_script_guide.md`.
+
 Manual: `cmake -B build -DCMAKE_BUILD_TYPE=Release -G Ninja && cmake --build build`
 
 Install: `cmake --install build` → `install/` prefix.
